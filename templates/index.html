@@ -1,0 +1,2339 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>InsightOS - Complete OSINT & Crypto Platform</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        /* --- CSS Variables for Themes --- */
+        :root {
+            --primary-color: #4361ee;
+            --primary-light: #4895ef;
+            --primary-dark: #3a0ca3;
+            --secondary-color: #7209b7;
+            --ai-color: #06d6a0;
+            --success-color: #4cc9f0;
+            --danger-color: #f72585;
+            --warning-color: #f8961e;
+            --info-color: #06d6a0;
+            
+            --critical-color: #ff002b;
+            --high-color: #ff6b6b;
+            --medium-color: #ffd166;
+            --low-color: #06d6a0;
+            --clean-color: #4cc9f0;
+            
+            --bg-color: #f8f9fa;
+            --card-bg: #ffffff;
+            --sidebar-bg: #ffffff;
+            --text-color: #2b2d42;
+            --text-light: #6c757d;
+            --border-color: #e9ecef;
+            --shadow: rgba(0, 0, 0, 0.08);
+            --shadow-hover: rgba(0, 0, 0, 0.12);
+            
+            --sidebar-width: 320px;
+            --ai-sidebar-width: 400px;
+            --border-radius: 12px;
+            --transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+        }
+
+        /* --- Dark Theme Variables --- */
+        body.dark {
+            --primary-color: #4895ef;
+            --primary-light: #4cc9f0;
+            --primary-dark: #3a0ca3;
+            --ai-color: #06d6a0;
+            
+            --critical-color: #ff5252;
+            --high-color: #ff6b6b;
+            --medium-color: #ffb74d;
+            --low-color: #4db6ac;
+            --clean-color: #4cc9f0;
+            
+            --bg-color: #121212;
+            --card-bg: #1e1e1e;
+            --sidebar-bg: #1a1a1a;
+            --text-color: #f8f9fa;
+            --text-light: #adb5bd;
+            --border-color: #2d2d2d;
+            --shadow: rgba(0, 0, 0, 0.25);
+            --shadow-hover: rgba(0, 0, 0, 0.35);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            line-height: 1.6;
+            transition: var(--transition);
+            display: flex;
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        .layout-container {
+            display: flex;
+            width: 100%;
+            min-height: 100vh;
+            position: relative;
+        }
+
+        /* === ENHANCED SIDEBAR === */
+        .sidebar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            height: 100%;
+            width: var(--sidebar-width);
+            background-color: var(--sidebar-bg);
+            box-shadow: 4px 0 20px var(--shadow);
+            display: flex;
+            flex-direction: column;
+            transition: var(--transition);
+            z-index: 1000;
+            border-right: 1px solid var(--border-color);
+            overflow: hidden;
+        }
+
+        .sidebar.closed {
+            transform: translateX(-100%);
+            box-shadow: none;
+        }
+
+        .sidebar-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 20px;
+            padding: 24px 20px 20px 20px;
+            border-bottom: 1px solid var(--border-color);
+            flex-shrink: 0;
+        }
+
+        .sidebar-header h1 {
+            font-weight: 700;
+            font-size: 24px;
+            background: linear-gradient(90deg, var(--primary-color), var(--secondary-color));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-left: 8px;
+        }
+
+        .logo-icon {
+            width: 32px;
+            height: 32px;
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+            font-size: 18px;
+        }
+
+        /* === SIDEBAR SEARCH === */
+        .sidebar-search {
+            padding: 0 20px 15px 20px;
+            border-bottom: 1px solid var(--border-color);
+            flex-shrink: 0;
+        }
+
+        .search-container {
+            position: relative;
+        }
+
+        .search-icon {
+            position: absolute;
+            left: 14px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--text-light);
+        }
+
+        .search-input {
+            width: 100%;
+            padding: 12px 12px 12px 42px;
+            border-radius: var(--border-radius);
+            border: 1px solid var(--border-color);
+            background-color: var(--card-bg);
+            color: var(--text-color);
+            font-size: 14px;
+            transition: var(--transition);
+        }
+
+        .search-input:focus {
+            outline: none;
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 3px rgba(67, 97, 238, 0.15);
+        }
+
+        /* === SIDEBAR NAVIGATION - SCROLLABLE === */
+        .sidebar-nav {
+            flex: 1;
+            overflow-y: auto;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .sidebar-nav::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        .sidebar-nav::-webkit-scrollbar-track {
+            background: transparent;
+        }
+
+        .sidebar-nav::-webkit-scrollbar-thumb {
+            background: var(--border-color);
+            border-radius: 3px;
+        }
+
+        .sidebar-nav::-webkit-scrollbar-thumb:hover {
+            background: var(--text-light);
+        }
+
+        /* === ORIGINAL TRACKER BUTTONS === */
+        .tracker-btn {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            padding: 16px;
+            margin-bottom: 4px;
+            border: none;
+            border-radius: var(--border-radius);
+            cursor: pointer;
+            background: transparent;
+            color: var(--text-light);
+            font-weight: 500;
+            font-size: 15px;
+            transition: var(--transition);
+            text-align: left;
+            position: relative;
+            overflow: hidden;
+            width: 100%;
+        }
+
+        .tracker-btn::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 0;
+            height: 100%;
+            width: 4px;
+            background-color: var(--primary-color);
+            transform: scaleY(0);
+            transition: var(--transition);
+            border-radius: 0 4px 4px 0;
+        }
+
+        .tracker-btn.active, 
+        .tracker-btn:hover {
+            background-color: rgba(67, 97, 238, 0.08);
+            color: var(--primary-color);
+        }
+
+        .tracker-btn.active::before {
+            transform: scaleY(1);
+        }
+
+        .tracker-btn i {
+            width: 20px;
+            text-align: center;
+        }
+
+        /* === CRYPTO ANALYSIS CATEGORY === */
+        .sidebar-category {
+            margin-top: 20px;
+            margin-bottom: 10px;
+        }
+
+        .category-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 10px;
+            padding: 12px 16px;
+            border-radius: var(--border-radius);
+            background: linear-gradient(90deg, rgba(67, 97, 238, 0.1), rgba(114, 9, 183, 0.1));
+            color: var(--primary-color);
+            font-weight: 600;
+            font-size: 14px;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .category-header:hover {
+            background: linear-gradient(90deg, rgba(67, 97, 238, 0.2), rgba(114, 9, 183, 0.2));
+        }
+
+        .category-header i {
+            margin-right: 10px;
+            font-size: 16px;
+        }
+
+        .category-header .toggle-icon {
+            margin-left: auto;
+            transition: var(--transition);
+            font-size: 12px;
+        }
+
+        .category-header.collapsed .toggle-icon {
+            transform: rotate(-90deg);
+        }
+
+        .category-items {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 6px;
+            overflow: hidden;
+            transition: var(--transition);
+            margin-bottom: 10px;
+        }
+
+        .category-items.collapsed {
+            display: none;
+        }
+
+        /* === CRYPTO TOOL BUTTONS === */
+        .crypto-tool-btn {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 12px 16px;
+            border: none;
+            border-radius: var(--border-radius);
+            cursor: pointer;
+            background: transparent;
+            color: var(--text-light);
+            font-weight: 500;
+            font-size: 14px;
+            transition: var(--transition);
+            text-align: left;
+            position: relative;
+            overflow: hidden;
+            width: 100%;
+        }
+
+        .crypto-tool-btn::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 0;
+            height: 100%;
+            width: 3px;
+            background-color: var(--ai-color);
+            transform: scaleY(0);
+            transition: var(--transition);
+            border-radius: 0 4px 4px 0;
+        }
+
+        .crypto-tool-btn.active, 
+        .crypto-tool-btn:hover {
+            background-color: rgba(6, 214, 160, 0.08);
+            color: var(--ai-color);
+        }
+
+        .crypto-tool-btn.active::before {
+            transform: scaleY(1);
+        }
+
+        .crypto-tool-btn i {
+            width: 20px;
+            text-align: center;
+            font-size: 16px;
+        }
+
+        .crypto-tool-btn .badge {
+            margin-left: auto;
+            padding: 2px 8px;
+            border-radius: 10px;
+            font-size: 11px;
+            font-weight: 600;
+        }
+
+        .badge-encode {
+            background-color: var(--primary-color);
+            color: white;
+        }
+
+        .badge-decode {
+            background-color: var(--secondary-color);
+            color: white;
+        }
+
+        .badge-hash {
+            background-color: var(--ai-color);
+            color: white;
+        }
+
+        .badge-cipher {
+            background-color: var(--warning-color);
+            color: white;
+        }
+
+        .badge-encrypt {
+            background-color: var(--danger-color);
+            color: white;
+        }
+
+        .badge-calc {
+            background-color: var(--info-color);
+            color: white;
+        }
+
+        /* === STATIC SIDEBAR FOOTER === */
+        .sidebar-footer {
+            margin-top: auto;
+            padding: 20px;
+            border-top: 1px solid var(--border-color);
+            background-color: var(--sidebar-bg);
+            flex-shrink: 0;
+            position: sticky;
+            bottom: 0;
+            z-index: 10;
+        }
+
+        .theme-toggle {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            width: 100%;
+            padding: 14px;
+            border-radius: var(--border-radius);
+            border: none;
+            cursor: pointer;
+            background-color: rgba(67, 97, 238, 0.1);
+            color: var(--primary-color);
+            font-weight: 600;
+            transition: var(--transition);
+        }
+
+        .theme-toggle:hover {
+            background-color: rgba(67, 97, 238, 0.2);
+        }
+
+        /* === MAIN CONTENT === */
+        .main {
+            flex: 1;
+            margin-left: var(--sidebar-width);
+            padding: 40px;
+            transition: var(--transition);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: flex-start;
+        }
+
+        .sidebar.closed ~ .main {
+            margin-left: 0;
+        }
+
+        .ai-sidebar.open ~ .main {
+            margin-right: var(--ai-sidebar-width);
+        }
+
+        /* === CARD === */
+        .card {
+            background-color: var(--card-bg);
+            padding: 40px;
+            border-radius: var(--border-radius);
+            box-shadow: 0 10px 30px var(--shadow);
+            max-width: 900px;
+            width: 100%;
+            transition: var(--transition);
+            border: 1px solid var(--border-color);
+        }
+
+        .card:hover {
+            box-shadow: 0 15px 40px var(--shadow-hover);
+        }
+
+        .card-header {
+            margin-bottom: 32px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .card-header h2 {
+            font-weight: 700;
+            font-size: 28px;
+            background: linear-gradient(90deg, var(--primary-color), var(--secondary-color));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .card-icon {
+            width: 40px;
+            height: 40px;
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+        }
+
+        /* === FORM === */
+        .track-form {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .input-group {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .input-label {
+            font-weight: 600;
+            font-size: 15px;
+            color: var(--text-color);
+        }
+
+        textarea, input[type="text"] {
+            width: 100%;
+            padding: 18px;
+            border-radius: var(--border-radius);
+            border: 1px solid var(--border-color);
+            font-size: 16px;
+            background-color: var(--card-bg);
+            color: var(--text-color);
+            transition: var(--transition);
+            font-family: 'Inter', sans-serif;
+        }
+
+        textarea:focus, input[type="text"]:focus {
+            border-color: var(--primary-color);
+            outline: none;
+            box-shadow: 0 0 0 3px rgba(67, 97, 238, 0.15);
+        }
+
+        .input-hint {
+            font-size: 14px;
+            color: var(--text-light);
+            margin-top: 4px;
+        }
+
+        .btn {
+            position: relative;
+            width: 100%;
+            padding: 18px;
+            border: none;
+            border-radius: var(--border-radius);
+            background: linear-gradient(90deg, var(--primary-color), var(--secondary-color));
+            color: white;
+            font-size: 17px;
+            font-weight: 600;
+            cursor: pointer;
+            overflow: hidden;
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(67, 97, 238, 0.3);
+        }
+
+        .btn:active {
+            transform: translateY(0);
+        }
+
+        .btn.loading {
+            pointer-events: none;
+            opacity: 0.8;
+        }
+
+        .btn.loading::after {
+            content: "";
+            position: absolute;
+            right: 20px;
+            width: 20px;
+            height: 20px;
+            border: 3px solid rgba(255, 255, 255, 0.3);
+            border-top: 3px solid white;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        /* === FILE UPLOAD === */
+        .file-upload {
+            display: none;
+        }
+
+        .file-label {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            padding: 18px;
+            border: 2px dashed var(--border-color);
+            border-radius: var(--border-radius);
+            background-color: var(--card-bg);
+            cursor: pointer;
+            transition: var(--transition);
+            text-align: center;
+        }
+
+        .file-label:hover {
+            border-color: var(--primary-color);
+            background-color: rgba(67, 97, 238, 0.05);
+        }
+
+        .file-name {
+            margin-top: 10px;
+            font-size: 14px;
+            color: var(--text-light);
+            text-align: center;
+        }
+
+        /* === RESULTS === */
+        .result-container {
+            margin-top: 40px;
+            width: 100%;
+        }
+
+        .result {
+            background-color: var(--card-bg);
+            padding: 28px;
+            border-radius: var(--border-radius);
+            box-shadow: 0 6px 20px var(--shadow);
+            transition: var(--transition);
+            border-left: 5px solid var(--primary-color);
+            position: relative;
+        }
+
+        .result-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .result-title {
+            font-weight: 700;
+            font-size: 20px;
+            color: var(--primary-color);
+        }
+
+        .clear {
+            padding: 8px 16px;
+            border-radius: 8px;
+            border: none;
+            background-color: rgba(247, 37, 133, 0.1);
+            color: var(--danger-color);
+            cursor: pointer;
+            font-weight: 600;
+            transition: var(--transition);
+        }
+
+        .clear:hover {
+            background-color: rgba(247, 37, 133, 0.2);
+        }
+
+        .result-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 16px;
+        }
+
+        .result-item {
+            display: flex;
+            flex-direction: column;
+            padding: 16px;
+            background-color: rgba(67, 97, 238, 0.05);
+            border-radius: 10px;
+            transition: var(--transition);
+        }
+
+        .result-item:hover {
+            background-color: rgba(67, 97, 238, 0.1);
+            transform: translateY(-2px);
+        }
+
+        .result-key {
+            font-weight: 600;
+            font-size: 14px;
+            color: var(--text-light);
+            margin-bottom: 4px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .result-value {
+            font-weight: 500;
+            font-size: 16px;
+            color: var(--text-color);
+            word-break: break-word;
+        }
+
+        .result-value.error {
+            color: var(--danger-color);
+        }
+
+        /* === CRYPTO RESULTS === */
+        .crypto-result {
+            background-color: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: var(--border-radius);
+            padding: 20px;
+            margin-top: 20px;
+            font-family: 'Courier New', monospace;
+            overflow-x: auto;
+        }
+
+        .crypto-result-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .crypto-result-label {
+            font-weight: 700;
+            color: var(--primary-color);
+            font-size: 16px;
+        }
+
+        .copy-btn {
+            padding: 6px 12px;
+            background-color: rgba(6, 214, 160, 0.1);
+            color: var(--ai-color);
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 12px;
+            font-weight: 600;
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .copy-btn:hover {
+            background-color: rgba(6, 214, 160, 0.2);
+            transform: translateY(-1px);
+        }
+
+        /* === AI CHAT SIDEBAR === */
+        .ai-sidebar {
+            position: fixed;
+            top: 0;
+            right: -400px;
+            height: 100%;
+            width: var(--ai-sidebar-width);
+            background-color: var(--sidebar-bg);
+            box-shadow: -4px 0 20px var(--shadow);
+            display: flex;
+            flex-direction: column;
+            transition: var(--transition);
+            z-index: 900;
+            border-left: 1px solid var(--border-color);
+            overflow: hidden;
+        }
+
+        .ai-sidebar.open {
+            right: 0;
+        }
+
+        .ai-header {
+            padding: 24px;
+            border-bottom: 1px solid var(--border-color);
+        }
+        
+        body.dark .ai-header {
+            background-color: #222;
+        }
+
+        .ai-header-content {
+            display: flex;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+
+        .ai-logo-icon {
+            width: 32px;
+            height: 32px;
+            background: linear-gradient(135deg, var(--ai-color), var(--primary-color));
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+            font-size: 16px;
+            margin-right: 10px;
+        }
+
+        .ai-header h1 {
+            font-weight: 700;
+            font-size: 24px;
+            background: linear-gradient(90deg, var(--primary-color), var(--secondary-color));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-left: 8px;
+        }
+
+        .ai-header p {
+            margin-top: 8px;
+            opacity: 0.9;
+            font-size: 14px;
+            color: var(--text-light);
+        }
+
+        .ai-chat-container {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+
+        .ai-messages {
+            flex: 1;
+            padding: 20px;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+
+        .ai-message {
+            max-width: 85%;
+            padding: 12px 16px;
+            border-radius: 18px;
+            font-size: 14px;
+            line-height: 1.5;
+            animation: fadeIn 0.3s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .ai-message.user {
+            align-self: flex-end;
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: white;
+            border-bottom-right-radius: 4px;
+        }
+
+        .ai-message.bot {
+            align-self: flex-start;
+            background-color: rgba(6, 214, 160, 0.1);
+            border: 1px solid var(--ai-color);
+            border-bottom-left-radius: 4px;
+            color: var(--text-color);
+        }
+
+        .ai-input-container {
+            padding: 20px;
+            border-top: 1px solid var(--border-color);
+            background-color: var(--card-bg);
+        }
+
+        .ai-input-wrapper {
+            display: flex;
+            gap: 10px;
+            align-items: flex-end;
+        }
+
+        .ai-input {
+            flex: 1;
+            padding: 12px 16px;
+            border-radius: var(--border-radius);
+            border: 1px solid var(--border-color);
+            background-color: var(--card-bg);
+            color: var(--text-color);
+            font-size: 14px;
+            resize: none;
+            min-height: 50px;
+            max-height: 120px;
+            transition: var(--transition);
+        }
+
+        .ai-input:focus {
+            outline: none;
+            border-color: var(--ai-color);
+            box-shadow: 0 0 0 3px rgba(6, 214, 160, 0.15);
+        }
+
+        .ai-send-btn {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            border: none;
+            background: linear-gradient(135deg, var(--ai-color), var(--primary-color));
+            color: white;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: var(--transition);
+        }
+
+        .ai-send-btn:hover {
+            transform: scale(1.05);
+            box-shadow: 0 5px 15px rgba(6, 214, 160, 0.3);
+        }
+
+        .ai-send-btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        .ai-typing {
+            padding: 8px 16px;
+            color: var(--text-light);
+            font-style: italic;
+            font-size: 13px;
+            display: none;
+            background-color: rgba(6, 214, 160, 0.05);
+            border-radius: 8px;
+            margin: 0 20px 10px 20px;
+            animation: pulse 2s infinite;
+        }
+
+        .ai-typing.show {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        @keyframes pulse {
+            0% { opacity: 0.6; }
+            50% { opacity: 1; }
+            100% { opacity: 0.6; }
+        }
+
+        .ai-typing i {
+            font-size: 16px;
+            color: var(--ai-color);
+        }
+
+        /* === AI TRIGGER === */
+        .ai-trigger {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--ai-color), var(--primary-color));
+            color: white;
+            border: none;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            box-shadow: 0 8px 25px rgba(6, 214, 160, 0.4);
+            transition: var(--transition);
+            z-index: 800;
+        }
+
+        .ai-trigger:hover {
+            transform: scale(1.1);
+            box-shadow: 0 12px 30px rgba(6, 214, 160, 0.6);
+        }
+
+        .ai-badge {
+            position: absolute;
+            top: -5px;
+            right: -5px;
+            background-color: var(--danger-color);
+            color: white;
+            font-size: 12px;
+            font-weight: bold;
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        /* === HAMBURGER MENU === */
+        .hamburger {
+            display: none;
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            width: 40px;
+            height: 40px;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+            background-color: var(--card-bg);
+            border-radius: var(--border-radius);
+            box-shadow: 0 4px 12px var(--shadow);
+            z-index: 1100;
+            transition: var(--transition);
+        }
+
+        .hamburger:hover {
+            box-shadow: 0 6px 16px var(--shadow-hover);
+        }
+
+        .hamburger div {
+            height: 3px;
+            width: 24px;
+            background-color: var(--primary-color);
+            border-radius: 2px;
+            transition: var(--transition);
+            margin: 3px 0;
+        }
+
+        .hamburger.active div:nth-child(1) {
+            transform: rotate(45deg) translate(6px, 6px);
+        }
+
+        .hamburger.active div:nth-child(2) {
+            opacity: 0;
+        }
+
+        .hamburger.active div:nth-child(3) {
+            transform: rotate(-45deg) translate(6px, -6px);
+        }
+
+        /* === RESPONSIVE === */
+        @media (max-width: 1024px) {
+            .card {
+                max-width: 95%;
+                padding: 30px;
+            }
+            
+            .result-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .ai-sidebar {
+                width: 350px;
+                right: -350px;
+            }
+            
+            .ai-sidebar.open ~ .main {
+                margin-right: 350px;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .hamburger {
+                display: flex;
+            }
+            
+            .sidebar {
+                transform: translateX(-100%);
+                width: 280px;
+            }
+            
+            .sidebar.open {
+                transform: translateX(0);
+            }
+            
+            .main {
+                margin-left: 0;
+                padding: 30px 20px;
+            }
+            
+            .card {
+                padding: 24px;
+            }
+            
+            .card-header h2 {
+                font-size: 24px;
+            }
+            
+            .ai-sidebar {
+                width: 100%;
+                right: -100%;
+            }
+            
+            .ai-sidebar.open {
+                right: 0;
+            }
+            
+            .ai-sidebar.open ~ .main {
+                margin-right: 0;
+            }
+            
+            .ai-trigger {
+                bottom: 20px;
+                right: 20px;
+                width: 50px;
+                height: 50px;
+                font-size: 20px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .card {
+                padding: 20px;
+            }
+            
+            .btn, input[type="text"], textarea {
+                padding: 16px;
+            }
+            
+            .result {
+                padding: 20px;
+            }
+            
+            .card-header {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 8px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<div class="layout-container">
+    <!-- AI Chat Trigger Button -->
+    <button class="ai-trigger" id="aiTrigger">
+        <i class="fas fa-robot"></i>
+        <span class="ai-badge" id="aiBadge" style="display: none;">!</span>
+    </button>
+
+    <!-- AI Chat Sidebar -->
+    <div class="ai-sidebar" id="aiSidebar">
+        <div class="ai-header">
+            <div class="ai-header-content">
+                 <div class="logo-icon">I</div>
+                <h1>InsightOS AI Helper</h1>
+            </div>
+            <p>Ask me anything about OSINT, threat intelligence, or how to use this platform</p>
+        </div>
+        
+        <div class="ai-quick-tips">
+            <h4>Quick Questions:</h4>
+            <div>
+                <span class="ai-quick-tip" onclick="askQuestion('What is OSINT?')">What is OSINT?</span>
+                <span class="ai-quick-tip" onclick="askQuestion('How to analyze an IP address?')">IP Analysis</span>
+                <span class="ai-quick-tip" onclick="askQuestion('What is Threat Intelligence?')">Threat Intel</span>
+                <span class="ai-quick-tip" onclick="askQuestion('How to track a domain?')">Domain Tracking</span>
+                <span class="ai-quick-tip" onclick="askQuestion('What is Base64 encoding?')">Base64 Encoding</span>
+                <span class="ai-quick-tip" onclick="askQuestion('How does ROT13 work?')">ROT13 Cipher</span>
+            </div>
+        </div>
+        
+        <div class="ai-chat-container">
+            <div class="ai-messages" id="aiMessages">
+                <!-- Initial welcome message -->
+                <div class="ai-message bot">
+                    👋 Hello! I'm the InsightOS AI Helper. I can assist you with OSINT investigations, crypto analysis, threat intelligence, and guide you through using the platform. How can I help you today?
+                </div>
+            </div>
+            
+            <div class="ai-typing" id="aiTyping">
+                <i class="fas fa-ellipsis-h"></i> AI is thinking...
+            </div>
+            
+            <div class="ai-input-container">
+                <div class="ai-input-wrapper">
+                    <textarea 
+                        class="ai-input" 
+                        id="aiInput" 
+                        placeholder="Ask me anything ..."
+                        rows="2"
+                    ></textarea>
+                    <button class="ai-send-btn" id="aiSendBtn">
+                        <i class="fas fa-paper-plane"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Hamburger Menu -->
+    <div class="hamburger" id="hamburger">
+        <div></div>
+        <div></div>
+        <div></div>
+    </div>
+
+    <!-- Left Sidebar with ALL Features -->
+    <div class="sidebar open" id="sidebar">
+        <div class="sidebar-header">
+            <div class="logo-icon">I</div>
+            <h1>InsightOS</h1>
+        </div>
+        
+        <!-- Search Bar -->
+        <div class="sidebar-search">
+            <div class="search-container">
+                <i class="fas fa-search search-icon"></i>
+                <input type="text" class="search-input" id="sidebarSearch" placeholder="Search tools and features...">
+            </div>
+        </div>
+        
+        <!-- Main Navigation -->
+        <div class="sidebar-nav" id="sidebarNav">
+            <!-- Original Tracker Buttons -->
+            <button class="tracker-btn active" data-type="phone">
+                <i class="fas fa-phone"></i>
+                Phone Tracker
+            </button>
+            <button class="tracker-btn" data-type="email">
+                <i class="fas fa-envelope"></i>
+                Email Tracker
+            </button>
+            <button class="tracker-btn" data-type="ip">
+                <i class="fas fa-network-wired"></i>
+                IP Tracker
+            </button>
+            <button class="tracker-btn" data-type="domain">
+                <i class="fas fa-globe"></i>
+                Domain Tracker
+            </button>
+            <button class="tracker-btn" data-type="username">
+                <i class="fas fa-user"></i>
+                Username Tracker
+            </button>
+            <button class="tracker-btn" data-type="crypto">
+                <i class="fas fa-coins"></i>
+                Crypto Tracker
+            </button>
+            <button class="tracker-btn" data-type="metadata">
+                <i class="fas fa-file-alt"></i>
+                Metadata Tracker
+            </button>
+            <button class="tracker-btn" data-type="threat">
+                <i class="fas fa-shield-alt"></i>
+                Threat Intelligence
+            </button>
+            
+            <!-- Crypto Analysis Category -->
+            <div class="sidebar-category">
+                <div class="category-header active" data-category="crypto-analysis">
+                    <i class="fas fa-lock"></i>
+                    <span>Crypto Analysis Tools</span>
+                    <i class="fas fa-chevron-down toggle-icon"></i>
+                </div>
+                <div class="category-items" id="cryptoAnalysisItems">
+                    <!-- Encoding/Decoding -->
+                    <button class="crypto-tool-btn" data-tool="base64-encode">
+                        <i class="fas fa-code"></i>
+                        <span>Base64 Encode</span>
+                        <span class="badge badge-encode">EN</span>
+                    </button>
+                    <button class="crypto-tool-btn" data-tool="base64-decode">
+                        <i class="fas fa-code"></i>
+                        <span>Base64 Decode</span>
+                        <span class="badge badge-decode">DE</span>
+                    </button>
+                    <button class="crypto-tool-btn" data-tool="hex-encode">
+                        <i class="fas fa-hashtag"></i>
+                        <span>Hex Encode</span>
+                        <span class="badge badge-encode">EN</span>
+                    </button>
+                    <button class="crypto-tool-btn" data-tool="hex-decode">
+                        <i class="fas fa-hashtag"></i>
+                        <span>Hex Decode</span>
+                        <span class="badge badge-decode">DE</span>
+                    </button>
+                    <button class="crypto-tool-btn" data-tool="binary-encode">
+                        <i class="fas fa-binary"></i>
+                        <span>Binary Encode</span>
+                        <span class="badge badge-encode">EN</span>
+                    </button>
+                    <button class="crypto-tool-btn" data-tool="binary-decode">
+                        <i class="fas fa-binary"></i>
+                        <span>Binary Decode</span>
+                        <span class="badge badge-decode">DE</span>
+                    </button>
+                    <button class="crypto-tool-btn" data-tool="url-encode">
+                        <i class="fas fa-link"></i>
+                        <span>URL Encode</span>
+                        <span class="badge badge-encode">EN</span>
+                    </button>
+                    <button class="crypto-tool-btn" data-tool="url-decode">
+                        <i class="fas fa-link"></i>
+                        <span>URL Decode</span>
+                        <span class="badge badge-decode">DE</span>
+                    </button>
+                    <button class="crypto-tool-btn" data-tool="html-encode">
+                        <i class="fab fa-html5"></i>
+                        <span>HTML Encode</span>
+                        <span class="badge badge-encode">EN</span>
+                    </button>
+                    <button class="crypto-tool-btn" data-tool="html-decode">
+                        <i class="fab fa-html5"></i>
+                        <span>HTML Decode</span>
+                        <span class="badge badge-decode">DE</span>
+                    </button>
+                    
+                    <!-- Ciphers -->
+                    <button class="crypto-tool-btn" data-tool="rot13">
+                        <i class="fas fa-rotate"></i>
+                        <span>ROT13 Cipher</span>
+                        <span class="badge badge-cipher">CIP</span>
+                    </button>
+                    <button class="crypto-tool-btn" data-tool="caesar">
+                        <i class="fas fa-rotate-right"></i>
+                        <span>Caesar Cipher</span>
+                        <span class="badge badge-cipher">CIP</span>
+                    </button>
+                    <button class="crypto-tool-btn" data-tool="a1z26">
+                        <i class="fas fa-sort-numeric-up"></i>
+                        <span>A1Z26 Cipher</span>
+                        <span class="badge badge-cipher">CIP</span>
+                    </button>
+                    <button class="crypto-tool-btn" data-tool="morse">
+                        <i class="fas fa-wifi"></i>
+                        <span>Morse Code</span>
+                        <span class="badge badge-cipher">CIP</span>
+                    </button>
+                    <button class="crypto-tool-btn" data-tool="reverse">
+                        <i class="fas fa-exchange-alt"></i>
+                        <span>Reverse Text</span>
+                        <span class="badge badge-cipher">CIP</span>
+                    </button>
+                    <button class="crypto-tool-btn" data-tool="atbash">
+                        <i class="fas fa-random"></i>
+                        <span>Atbash Cipher</span>
+                        <span class="badge badge-cipher">CIP</span>
+                    </button>
+                    <button class="crypto-tool-btn" data-tool="xor">
+                        <i class="fas fa-xmark"></i>
+                        <span>XOR Calculator</span>
+                        <span class="badge badge-calc">CALC</span>
+                    </button>
+                    
+                    <!-- Hash Functions -->
+                    <button class="crypto-tool-btn" data-tool="md5">
+                        <i class="fas fa-fingerprint"></i>
+                        <span>MD5 Hash</span>
+                        <span class="badge badge-hash">HASH</span>
+                    </button>
+                    <button class="crypto-tool-btn" data-tool="sha1">
+                        <i class="fas fa-fingerprint"></i>
+                        <span>SHA-1 Hash</span>
+                        <span class="badge badge-hash">HASH</span>
+                    </button>
+                    <button class="crypto-tool-btn" data-tool="sha256">
+                        <i class="fas fa-fingerprint"></i>
+                        <span>SHA-256 Hash</span>
+                        <span class="badge badge-hash">HASH</span>
+                    </button>
+                    <button class="crypto-tool-btn" data-tool="sha512">
+                        <i class="fas fa-fingerprint"></i>
+                        <span>SHA-512 Hash</span>
+                        <span class="badge badge-hash">HASH</span>
+                    </button>
+                    <button class="crypto-tool-btn" data-tool="sha3-256">
+                        <i class="fas fa-fingerprint"></i>
+                        <span>SHA3-256 Hash</span>
+                        <span class="badge badge-hash">HASH</span>
+                    </button>
+                    <button class="crypto-tool-btn" data-tool="sha3-512">
+                        <i class="fas fa-fingerprint"></i>
+                        <span>SHA3-512 Hash</span>
+                        <span class="badge badge-hash">HASH</span>
+                    </button>
+                    
+                    <!-- Symmetric Encryption -->
+                    <button class="crypto-tool-btn" data-tool="aes">
+                        <i class="fas fa-key"></i>
+                        <span>AES Encryption</span>
+                        <span class="badge badge-encrypt">ENC</span>
+                    </button>
+                    <button class="crypto-tool-btn" data-tool="des">
+                        <i class="fas fa-key"></i>
+                        <span>DES Encryption</span>
+                        <span class="badge badge-encrypt">ENC</span>
+                    </button>
+                    <button class="crypto-tool-btn" data-tool="blowfish">
+                        <i class="fas fa-key"></i>
+                        <span>Blowfish</span>
+                        <span class="badge badge-encrypt">ENC</span>
+                    </button>
+                    <button class="crypto-tool-btn" data-tool="rc4">
+                        <i class="fas fa-key"></i>
+                        <span>RC4 Cipher</span>
+                        <span class="badge badge-encrypt">ENC</span>
+                    </button>
+                    
+                    <!-- Analysis Tools -->
+                    <button class="crypto-tool-btn" data-tool="base32">
+                        <i class="fas fa-code"></i>
+                        <span>Base32 Encode</span>
+                        <span class="badge badge-encode">EN</span>
+                    </button>
+                    <button class="crypto-tool-btn" data-tool="base58">
+                        <i class="fas fa-code"></i>
+                        <span>Base58 Encode</span>
+                        <span class="badge badge-encode">EN</span>
+                    </button>
+                    <button class="crypto-tool-btn" data-tool="ascii">
+                        <i class="fas fa-font"></i>
+                        <span>ASCII Convert</span>
+                        <span class="badge badge-calc">CALC</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Static Footer with Theme Toggle -->
+        <div class="sidebar-footer">
+            <button class="theme-toggle" id="themeToggle">
+                <i class="fas fa-moon" id="themeIcon"></i>
+                <span>Dark Mode</span>
+            </button>
+        </div>
+    </div>
+    
+    <!-- Main Content -->
+    <div class="main">
+        <div class="card">
+            <div class="card-header">
+                <div class="card-icon">
+                    <i class="fas fa-search" id="cardIcon"></i>
+                </div>
+                <h2 id="cardTitle">OSINT & Threat Intelligence Tracker</h2>
+            </div>
+            
+            <!-- Dynamic Form based on selection -->
+            <form id="trackForm" class="track-form">
+                <input type="hidden" name="type" id="trackType" value="phone">
+                
+                <div class="input-group">
+                    <label class="input-label" id="inputLabel" for="targetInput">Phone Number</label>
+                    <div id="inputContainer">
+                        <input type="text" name="target" id="targetInput" placeholder="+3069XXXXXXXX" required>
+                    </div>
+                    <div class="input-hint" id="inputHint">Enter a phone number to track (e.g., +306912345678)</div>
+                </div>
+                
+                <!-- Additional fields for crypto tools -->
+                <div class="input-group" id="cryptoKeyGroup" style="display: none;">
+                    <label class="input-label" for="cryptoKey">Key/Password</label>
+                    <input type="text" id="cryptoKey" placeholder="Enter encryption key or password...">
+                </div>
+                
+                <div class="input-group" id="cryptoModeGroup" style="display: none;">
+                    <label class="input-label">Mode</label>
+                    <div style="display: flex; gap: 10px;">
+                        <label style="display: flex; align-items: center; gap: 5px;">
+                            <input type="radio" name="cryptoMode" value="encode" checked> Encode
+                        </label>
+                        <label style="display: flex; align-items: center; gap: 5px;">
+                            <input type="radio" name="cryptoMode" value="decode"> Decode
+                        </label>
+                    </div>
+                </div>
+                
+                <button type="submit" class="btn" id="trackBtn">
+                    <i class="fas fa-search"></i>
+                    <span id="btnText">Track Target</span>
+                </button>
+            </form>
+            
+            <!-- Results Container -->
+            <div id="resultContainer" class="result-container"></div>
+        </div>
+        
+        <div class="footer">
+            <p>InsightOS - Advanced OSINT & Crypto Analysis Platform | v4.2</p>
+            <p style="margin-top: 10px; font-size: 12px;">
+                <i class="fas fa-robot"></i> Need help? Click the AI Helper button in the bottom right corner!
+            </p>
+        </div>
+    </div>
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // DOM Elements
+    const form = document.getElementById('trackForm');
+    const btn = document.getElementById('trackBtn');
+    const btnText = document.getElementById('btnText');
+    const typeInput = document.getElementById('trackType');
+    const cardTitle = document.getElementById('cardTitle');
+    const cardIcon = document.getElementById('cardIcon');
+    const inputLabel = document.getElementById('inputLabel');
+    const inputHint = document.getElementById('inputHint');
+    const inputContainer = document.getElementById('inputContainer');
+    const cryptoKeyGroup = document.getElementById('cryptoKeyGroup');
+    const cryptoModeGroup = document.getElementById('cryptoModeGroup');
+    
+    const trackerButtons = document.querySelectorAll('.tracker-btn');
+    const cryptoToolButtons = document.querySelectorAll('.crypto-tool-btn');
+    const categoryHeaders = document.querySelectorAll('.category-header');
+    const themeToggle = document.getElementById('themeToggle');
+    const themeIcon = document.getElementById('themeIcon');
+    const sidebar = document.getElementById('sidebar');
+    const hamburger = document.getElementById('hamburger');
+    const searchInput = document.getElementById('sidebarSearch');
+    
+    // AI Elements
+    const aiTrigger = document.getElementById('aiTrigger');
+    const aiSidebar = document.getElementById('aiSidebar');
+    const aiMessages = document.getElementById('aiMessages');
+    const aiInput = document.getElementById('aiInput');
+    const aiSendBtn = document.getElementById('aiSendBtn');
+    const aiTyping = document.getElementById('aiTyping');
+    const aiBadge = document.getElementById('aiBadge');
+
+    // Configuration
+    const API_BASE = 'http://localhost:5000';
+
+    // Tracker configurations
+    const trackerConfigs = {
+        phone: {
+            placeholder: '+3069XXXXXXXX',
+            label: 'Phone Number',
+            hint: 'Enter a phone number to track (e.g., +306912345678)',
+            icon: 'fa-phone',
+            btnText: 'Track Phone',
+            endpoint: '/track'
+        },
+        email: {
+            placeholder: 'example@mail.com',
+            label: 'Email Address',
+            hint: 'Enter an email address to track (e.g., john.doe@example.com)',
+            icon: 'fa-envelope',
+            btnText: 'Track Email',
+            endpoint: '/track'
+        },
+        ip: {
+            placeholder: '8.8.8.8',
+            label: 'IP Address',
+            hint: 'Enter an IP address to track (e.g., 8.8.8.8)',
+            icon: 'fa-network-wired',
+            btnText: 'Track IP',
+            endpoint: '/track'
+        },
+        domain: {
+            placeholder: 'example.com',
+            label: 'Domain Name',
+            hint: 'Enter a domain name to track (e.g., example.com)',
+            icon: 'fa-globe',
+            btnText: 'Track Domain',
+            endpoint: '/track'
+        },
+        username: {
+            placeholder: 'username123',
+            label: 'Username',
+            hint: 'Enter a username to track across platforms',
+            icon: 'fa-user',
+            btnText: 'Track Username',
+            endpoint: '/track'
+        },
+        crypto: {
+            placeholder: '1A1zP1eP5QGefi2DMPTfTL5SLmv7DivfNa',
+            label: 'Cryptocurrency Address',
+            hint: 'Enter a cryptocurrency address (BTC, ETH, etc.)',
+            icon: 'fa-coins',
+            btnText: 'Track Crypto',
+            endpoint: '/track'
+        },
+        metadata: {
+            placeholder: '',
+            label: 'Image File',
+            hint: 'Upload an image file to extract metadata',
+            icon: 'fa-file-alt',
+            btnText: 'Extract Metadata',
+            endpoint: '/api/metadata/upload'
+        },
+        threat: {
+            placeholder: '8.8.8.8, example.com, or https://example.com',
+            label: 'Threat Target',
+            hint: 'Enter an IP address, domain, or URL for comprehensive threat intelligence',
+            icon: 'fa-shield-alt',
+            btnText: 'Analyze Threat',
+            endpoint: '/api/threat/scan'
+        }
+    };
+
+    // Crypto tool configurations
+    const cryptoToolConfigs = {
+        // Encoding/Decoding
+        'base64-encode': { label: 'Base64 Encode', hint: 'Enter text to encode in Base64', icon: 'fa-code', needsKey: false },
+        'base64-decode': { label: 'Base64 Decode', hint: 'Enter Base64 text to decode', icon: 'fa-code', needsKey: false },
+        'hex-encode': { label: 'Hex Encode', hint: 'Enter text to encode in hexadecimal', icon: 'fa-hashtag', needsKey: false },
+        'hex-decode': { label: 'Hex Decode', hint: 'Enter hexadecimal text to decode', icon: 'fa-hashtag', needsKey: false },
+        'binary-encode': { label: 'Binary Encode', hint: 'Enter text to encode in binary', icon: 'fa-binary', needsKey: false },
+        'binary-decode': { label: 'Binary Decode', hint: 'Enter binary text to decode', icon: 'fa-binary', needsKey: false },
+        'url-encode': { label: 'URL Encode', hint: 'Enter text to URL encode', icon: 'fa-link', needsKey: false },
+        'url-decode': { label: 'URL Decode', hint: 'Enter URL encoded text to decode', icon: 'fa-link', needsKey: false },
+        'html-encode': { label: 'HTML Encode', hint: 'Enter text to HTML encode', icon: 'fab fa-html5', needsKey: false },
+        'html-decode': { label: 'HTML Decode', hint: 'Enter HTML encoded text to decode', icon: 'fab fa-html5', needsKey: false },
+        
+        // Ciphers
+        'rot13': { label: 'ROT13 Cipher', hint: 'Enter text for ROT13 encoding/decoding', icon: 'fa-rotate', needsKey: false },
+        'caesar': { label: 'Caesar Cipher', hint: 'Enter text and key for Caesar cipher', icon: 'fa-rotate-right', needsKey: true },
+        'a1z26': { label: 'A1Z26 Cipher', hint: 'Convert letters to numbers (A=1, B=2, ...)', icon: 'fa-sort-numeric-up', needsKey: false },
+        'morse': { label: 'Morse Code', hint: 'Convert text to Morse code or vice versa', icon: 'fa-wifi', needsKey: false },
+        'reverse': { label: 'Reverse Text', hint: 'Reverse the input text', icon: 'fa-exchange-alt', needsKey: false },
+        'atbash': { label: 'Atbash Cipher', hint: 'Apply Atbash cipher (A↔Z, B↔Y, ...)', icon: 'fa-random', needsKey: false },
+        'xor': { label: 'XOR Calculator', hint: 'Calculate XOR between text and key', icon: 'fa-xmark', needsKey: true },
+        
+        // Hash Functions
+        'md5': { label: 'MD5 Hash', hint: 'Generate MD5 hash of input text', icon: 'fa-fingerprint', needsKey: false },
+        'sha1': { label: 'SHA-1 Hash', hint: 'Generate SHA-1 hash of input text', icon: 'fa-fingerprint', needsKey: false },
+        'sha256': { label: 'SHA-256 Hash', hint: 'Generate SHA-256 hash of input text', icon: 'fa-fingerprint', needsKey: false },
+        'sha512': { label: 'SHA-512 Hash', hint: 'Generate SHA-512 hash of input text', icon: 'fa-fingerprint', needsKey: false },
+        'sha3-256': { label: 'SHA3-256 Hash', hint: 'Generate SHA3-256 hash of input text', icon: 'fa-fingerprint', needsKey: false },
+        'sha3-512': { label: 'SHA3-512 Hash', hint: 'Generate SHA3-512 hash of input text', icon: 'fa-fingerprint', needsKey: false },
+        
+        // Symmetric Encryption
+        'aes': { label: 'AES Encryption', hint: 'Encrypt/decrypt text using AES', icon: 'fa-key', needsKey: true },
+        'des': { label: 'DES Encryption', hint: 'Encrypt/decrypt text using DES', icon: 'fa-key', needsKey: true },
+        'blowfish': { label: 'Blowfish', hint: 'Encrypt/decrypt text using Blowfish', icon: 'fa-key', needsKey: true },
+        'rc4': { label: 'RC4 Cipher', hint: 'Encrypt/decrypt text using RC4', icon: 'fa-key', needsKey: true },
+        
+        // Analysis Tools
+        'base32': { label: 'Base32 Encode', hint: 'Encode text in Base32', icon: 'fa-code', needsKey: false },
+        'base58': { label: 'Base58 Encode', hint: 'Encode text in Base58', icon: 'fa-code', needsKey: false },
+        'ascii': { label: 'ASCII Convert', hint: 'Convert between text and ASCII codes', icon: 'fa-font', needsKey: false }
+    };
+
+    // Current state
+    let currentType = 'phone';
+    let currentCryptoTool = null;
+    let isCryptoMode = false;
+
+    // Initialize
+    init();
+
+    function init() {
+        // Load theme
+        if (localStorage.getItem('theme') === 'dark') {
+            document.body.classList.add('dark');
+            themeIcon.className = 'fas fa-sun';
+            themeToggle.querySelector('span').textContent = 'Light Mode';
+        }
+
+        // Set up tracker buttons
+        trackerButtons.forEach(button => {
+            button.addEventListener('click', () => {
+                switchToTracker(button);
+            });
+        });
+
+        // Set up crypto tool buttons
+        cryptoToolButtons.forEach(button => {
+            button.addEventListener('click', () => {
+                switchToCryptoTool(button);
+            });
+        });
+
+        // Category toggles
+        categoryHeaders.forEach(header => {
+            header.addEventListener('click', () => {
+                const category = header.getAttribute('data-category');
+                const items = document.getElementById(`${category}Items`);
+                if (items) {
+                    items.classList.toggle('collapsed');
+                    header.classList.toggle('collapsed');
+                }
+            });
+        });
+
+        // Search functionality
+        searchInput.addEventListener('input', function() {
+            const searchTerm = this.value.toLowerCase().trim();
+            filterSidebarItems(searchTerm);
+        });
+
+        // Theme toggle
+        themeToggle.addEventListener('click', () => {
+            const isDark = document.body.classList.toggle('dark');
+            
+            if (isDark) {
+                themeIcon.className = 'fas fa-sun';
+                themeToggle.querySelector('span').textContent = 'Light Mode';
+                localStorage.setItem('theme', 'dark');
+            } else {
+                themeIcon.className = 'fas fa-moon';
+                themeToggle.querySelector('span').textContent = 'Dark Mode';
+                localStorage.setItem('theme', 'light');
+            }
+        });
+
+        // Hamburger menu
+        hamburger.addEventListener('click', () => {
+            sidebar.classList.toggle('open');
+            hamburger.classList.toggle('active');
+        });
+
+        // Close sidebar on mobile when clicking outside
+        document.addEventListener('click', (e) => {
+            if (window.innerWidth <= 768 && 
+                !sidebar.contains(e.target) && 
+                !hamburger.contains(e.target) && 
+                sidebar.classList.contains('open')) {
+                sidebar.classList.remove('open');
+                hamburger.classList.remove('active');
+            }
+            
+            // Close AI sidebar when clicking outside on mobile
+            if (window.innerWidth <= 768 && 
+                aiSidebar.classList.contains('open') &&
+                !aiSidebar.contains(e.target) && 
+                !aiTrigger.contains(e.target)) {
+                aiSidebar.classList.remove('open');
+            }
+        });
+
+        // Form submission
+        form.addEventListener('submit', handleSubmit);
+        
+        // AI Chat initialization
+        initAIChat();
+        
+        // Initialize crypto analysis category as expanded
+        const cryptoCategory = document.querySelector('[data-category="crypto-analysis"]');
+        if (cryptoCategory && !cryptoCategory.classList.contains('active')) {
+            cryptoCategory.classList.add('active');
+        }
+    }
+
+    function switchToTracker(button) {
+        // Reset crypto mode
+        isCryptoMode = false;
+        currentCryptoTool = null;
+        
+        // Update button states
+        trackerButtons.forEach(b => b.classList.remove('active'));
+        cryptoToolButtons.forEach(b => b.classList.remove('active'));
+        button.classList.add('active');
+        
+        // Update current type
+        const type = button.getAttribute('data-type');
+        currentType = type;
+        typeInput.value = type;
+        
+        // Update UI
+        updateUIForTracker(type);
+        
+        // Close sidebar on mobile
+        if (window.innerWidth <= 768) {
+            sidebar.classList.remove('open');
+            hamburger.classList.remove('active');
+        }
+    }
+
+    function switchToCryptoTool(button) {
+        // Set crypto mode
+        isCryptoMode = true;
+        
+        // Update button states
+        trackerButtons.forEach(b => b.classList.remove('active'));
+        cryptoToolButtons.forEach(b => b.classList.remove('active'));
+        button.classList.add('active');
+        
+        // Update current tool
+        const tool = button.getAttribute('data-tool');
+        currentCryptoTool = tool;
+        typeInput.value = 'crypto-tool';
+        
+        // Update UI
+        updateUIForCryptoTool(tool);
+        
+        // Close sidebar on mobile
+        if (window.innerWidth <= 768) {
+            sidebar.classList.remove('open');
+            hamburger.classList.remove('active');
+        }
+    }
+
+    function updateUIForTracker(type) {
+        const config = trackerConfigs[type];
+        
+        // Update card
+        cardTitle.textContent = `${config.label} Tracker`;
+        cardIcon.className = `fas ${config.icon}`;
+        
+        // Update form
+        inputLabel.textContent = config.label;
+        inputHint.textContent = config.hint;
+        btnText.textContent = config.btnText;
+        
+        // Clear results
+        document.getElementById('resultContainer').innerHTML = '';
+        
+        // Hide crypto-specific fields
+        cryptoKeyGroup.style.display = 'none';
+        cryptoModeGroup.style.display = 'none';
+        
+        // Handle metadata special case (file upload)
+        if (type === 'metadata') {
+            inputContainer.innerHTML = `
+                <label class="file-label" for="fileInput">
+                    <i class="fas fa-cloud-upload-alt"></i>
+                    Choose an image file (PNG, JPG, JPEG, GIF, TIFF, BMP)
+                </label>
+                <input type="file" id="fileInput" class="file-upload" accept="image/*">
+                <div id="fileName" class="file-name"></div>
+            `;
+            
+            // Add file input event listener
+            const fileInput = document.getElementById('fileInput');
+            const fileName = document.getElementById('fileName');
+            
+            fileInput.addEventListener('change', function(e) {
+                if (this.files.length > 0) {
+                    fileName.textContent = `Selected file: ${this.files[0].name}`;
+                } else {
+                    fileName.textContent = '';
+                }
+            });
+        } else {
+            // Regular text input for other trackers
+            inputContainer.innerHTML = `<input type="text" name="target" id="targetInput" placeholder="${config.placeholder}" required>`;
+            const targetInput = document.getElementById('targetInput');
+            targetInput.focus();
+        }
+    }
+
+    function updateUIForCryptoTool(tool) {
+        const config = cryptoToolConfigs[tool];
+        
+        // Update card
+        cardTitle.textContent = config.label;
+        cardIcon.className = config.icon;
+        
+        // Update form
+        inputLabel.textContent = 'Input Text';
+        inputHint.textContent = config.hint;
+        btnText.textContent = config.label;
+        
+        // Clear results
+        document.getElementById('resultContainer').innerHTML = '';
+        
+        // Show/hide crypto-specific fields
+        if (config.needsKey) {
+            cryptoKeyGroup.style.display = 'flex';
+            document.getElementById('cryptoKey').placeholder = 'Enter key (e.g., 3 for Caesar cipher)';
+        } else {
+            cryptoKeyGroup.style.display = 'none';
+        }
+        
+        // Show mode selection for encode/decode tools
+        if (tool.includes('encode') || tool.includes('decode') || 
+            tool === 'caesar' || tool === 'a1z26' || tool === 'morse' || 
+            tool === 'ascii') {
+            cryptoModeGroup.style.display = 'flex';
+            
+            // Set default mode based on tool name
+            const modeRadios = document.querySelectorAll('input[name="cryptoMode"]');
+            if (tool.includes('encode') || tool === 'caesar' || tool === 'a1z26' || tool === 'morse') {
+                modeRadios[0].checked = true;
+            } else if (tool.includes('decode')) {
+                modeRadios[1].checked = true;
+            } else {
+                modeRadios[0].checked = true;
+            }
+        } else {
+            cryptoModeGroup.style.display = 'none';
+        }
+        
+        // Set up input field
+        inputContainer.innerHTML = `<textarea name="target" id="targetInput" rows="4" placeholder="Enter text to process..."></textarea>`;
+        const targetInput = document.getElementById('targetInput');
+        targetInput.focus();
+    }
+
+    function filterSidebarItems(searchTerm) {
+        const allButtons = document.querySelectorAll('.tracker-btn, .crypto-tool-btn');
+        
+        if (searchTerm === '') {
+            // Show all items
+            allButtons.forEach(button => {
+                button.style.display = 'flex';
+            });
+            return;
+        }
+        
+        // Filter items
+        allButtons.forEach(button => {
+            const text = button.textContent.toLowerCase();
+            if (text.includes(searchTerm)) {
+                button.style.display = 'flex';
+            } else {
+                button.style.display = 'none';
+            }
+        });
+    }
+
+    async function handleSubmit(e) {
+        e.preventDefault();
+        
+        btn.classList.add('loading');
+        btn.disabled = true;
+        
+        try {
+            let endpoint, body, isFormData = false;
+            let formData;
+            
+            if (isCryptoMode && currentCryptoTool) {
+                // Handle crypto tool
+                const input = document.getElementById('targetInput').value;
+                const key = document.getElementById('cryptoKey') ? document.getElementById('cryptoKey').value : '';
+                const mode = document.querySelector('input[name="cryptoMode"]:checked')?.value || 'encode';
+                
+                if (!input.trim()) {
+                    showError('Please enter some text');
+                    return;
+                }
+                
+                endpoint = '/crypto/process';
+                body = JSON.stringify({
+                    tool: currentCryptoTool,
+                    input: input,
+                    key: key,
+                    mode: mode
+                });
+            } else {
+                // Handle regular tracker
+                const type = currentType;
+                const config = trackerConfigs[type];
+                let target;
+                
+                if (type === 'metadata') {
+                    const fileInput = document.getElementById('fileInput');
+                    if (!fileInput || !fileInput.files.length) {
+                        showError('Please select a file');
+                        return;
+                    }
+                    
+                    formData = new FormData();
+                    formData.append('file', fileInput.files[0]);
+                    endpoint = config.endpoint;
+                    isFormData = true;
+                } else {
+                    target = document.getElementById('targetInput').value;
+                    
+                    if (!target.trim()) {
+                        showError('Please enter a target');
+                        return;
+                    }
+                    
+                    endpoint = config.endpoint;
+                    body = JSON.stringify({ 
+                        type: type, 
+                        target: target 
+                    });
+                }
+            }
+            
+            console.log(`Sending request to: ${API_BASE}${endpoint}`);
+            
+            const options = {
+                method: 'POST',
+                headers: isFormData ? {} : { 'Content-Type': 'application/json' },
+                body: isFormData ? formData : body
+            };
+            
+            const response = await fetch(`${API_BASE}${endpoint}`, options);
+            
+            if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`);
+            }
+            
+            const data = await response.json();
+            
+            if (data.success) {
+                if (isCryptoMode) {
+                    displayCryptoResults(data.result, currentCryptoTool);
+                } else {
+                    displayResults(data.results || data, currentType, 
+                        document.getElementById('targetInput')?.value || 'File Upload');
+                }
+                
+                // Show AI helper badge
+                if (!aiSidebar.classList.contains('open')) {
+                    aiBadge.style.display = 'flex';
+                    aiBadge.textContent = '?';
+                }
+            } else {
+                showError(data.error || 'Operation failed');
+            }
+            
+        } catch (error) {
+            console.error('Error:', error);
+            showError(`Error: ${error.message}. Make sure the Flask server is running at ${API_BASE}`);
+        } finally {
+            btn.classList.remove('loading');
+            btn.disabled = false;
+        }
+    }
+
+    function displayCryptoResults(result, tool) {
+        const resultContainer = document.getElementById('resultContainer');
+        const toolConfig = cryptoToolConfigs[tool];
+        const input = document.getElementById('targetInput').value;
+        
+        let resultHTML = `
+            <div class="result">
+                <div class="result-header">
+                    <div class="result-title">
+                        <i class="${toolConfig.icon}"></i>
+                        ${toolConfig.label} Results
+                    </div>
+                    <button class="clear" onclick="this.closest('.result').remove()">Clear</button>
+                </div>
+                
+                <div class="result-grid">
+                    <div class="result-item">
+                        <div class="result-key">Input</div>
+                        <div class="result-value">${input.substring(0, 100)}${input.length > 100 ? '...' : ''}</div>
+                    </div>
+                    
+                    <div class="result-item">
+                        <div class="result-key">Output</div>
+                        <div class="result-value" style="font-family: 'Courier New', monospace; word-break: break-all;">${result}</div>
+                    </div>
+                </div>
+                
+                <div style="margin-top: 20px; display: flex; gap: 10px;">
+                    <button class="copy-btn" onclick="copyToClipboard('${result.replace(/'/g, "\\'")}')">
+                        <i class="fas fa-copy"></i> Copy Result
+                    </button>
+                    <button class="copy-btn" onclick="copyToClipboard('${input.replace(/'/g, "\\'")}')">
+                        <i class="fas fa-copy"></i> Copy Input
+                    </button>
+                </div>
+            </div>
+        `;
+        
+        resultContainer.innerHTML = resultHTML;
+        resultContainer.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+    }
+
+    function displayResults(results, type, target) {
+        const resultContainer = document.getElementById('resultContainer');
+        
+        if (!results || (typeof results === 'object' && Object.keys(results).length === 0)) {
+            resultContainer.innerHTML = `
+                <div class="result">
+                    <div class="result-header">
+                        <div class="result-title">No Results Found</div>
+                        <button class="clear" onclick="this.closest('.result').remove()">Clear</button>
+                    </div>
+                    <div style="color: var(--text-light); text-align: center; padding: 20px;">
+                        No data returned for ${type}: ${target}
+                    </div>
+                </div>
+            `;
+            return;
+        }
+        
+        let resultHTML = `
+            <div class="result">
+                <div class="result-header">
+                    <div class="result-title">
+                        <i class="${trackerConfigs[type]?.icon || 'fas fa-search'}"></i>
+                        Results for ${type}: ${target}
+                    </div>
+                    <button class="clear" onclick="this.closest('.result').remove()">Clear</button>
+                </div>
+                <div class="result-grid">
+        `;
+        
+        // Handle different result formats
+        if (typeof results === 'string') {
+            resultHTML += `
+                <div class="result-item">
+                    <div class="result-key">Result</div>
+                    <div class="result-value">${results}</div>
+                </div>
+            `;
+        } else if (typeof results === 'object') {
+            // Display object properties
+            for (const [key, value] of Object.entries(results)) {
+                if (value === null || value === undefined || key === 'error') continue;
+                
+                const displayKey = formatKey(key);
+                let displayValue = formatValue(value);
+                
+                resultHTML += `
+                    <div class="result-item">
+                        <div class="result-key">${displayKey}</div>
+                        <div class="result-value">${displayValue}</div>
+                    </div>
+                `;
+            }
+        }
+        
+        resultHTML += `
+                </div>
+            </div>
+        `;
+        
+        resultContainer.innerHTML = resultHTML;
+        resultContainer.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+    }
+
+    function formatKey(key) {
+        return key
+            .replace(/_/g, ' ')
+            .replace(/\b\w/g, l => l.toUpperCase());
+    }
+    
+    function formatValue(value) {
+        if (value === null || value === undefined) return 'N/A';
+        
+        if (Array.isArray(value)) {
+            return value.length > 0 ? value.join(', ') : 'None';
+        }
+        
+        if (typeof value === 'object') {
+            try {
+                return Object.keys(value).length > 0 ? 
+                    JSON.stringify(value, null, 2) : 
+                    'No data';
+            } catch {
+                return 'Complex data';
+            }
+        }
+        
+        if (typeof value === 'boolean') {
+            return value ? 
+                '<span style="color: var(--ai-color);"><i class="fas fa-check-circle"></i> Yes</span>' : 
+                '<span style="color: var(--text-light);"><i class="fas fa-times-circle"></i> No</span>';
+        }
+        
+        if (typeof value === 'string' && value.startsWith('http')) {
+            return `<a href="${value}" target="_blank" style="color: var(--primary-color); text-decoration: underline;">${value}</a>`;
+        }
+        
+        return value.toString();
+    }
+
+    function showError(message) {
+        const resultContainer = document.getElementById('resultContainer');
+        resultContainer.innerHTML = `
+            <div class="result">
+                <div class="result-header">
+                    <div class="result-title">Error</div>
+                    <button class="clear" onclick="this.closest('.result').remove()">Clear</button>
+                </div>
+                <div class="result-grid">
+                    <div class="result-item">
+                        <div class="result-key">Error</div>
+                        <div class="result-value error">${message}</div>
+                    </div>
+                </div>
+            </div>
+        `;
+    }
+
+    // AI Chat functions
+    aiTrigger.addEventListener('click', () => {
+        aiSidebar.classList.toggle('open');
+        aiBadge.style.display = 'none';
+        
+        setTimeout(() => {
+            aiMessages.scrollTop = aiMessages.scrollHeight;
+        }, 100);
+    });
+
+    function initAIChat() {
+        aiInput.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter' && !e.shiftKey) {
+                e.preventDefault();
+                sendAIMessage();
+            }
+        });
+        
+        aiInput.addEventListener('input', function() {
+            this.style.height = 'auto';
+            this.style.height = Math.min(this.scrollHeight, 120) + 'px';
+        });
+        
+        aiSendBtn.addEventListener('click', sendAIMessage);
+    }
+    
+    function askQuestion(question) {
+        aiInput.value = question;
+        sendAIMessage();
+    }
+    
+    function sendAIMessage() {
+        const message = aiInput.value.trim();
+        if (!message) return;
+
+        addAIMessage('user', message);
+        aiInput.value = '';
+        
+        showTypingIndicator();
+        aiSendBtn.disabled = true;
+
+        fetch(`${API_BASE}/api/chat-simple`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ message })
+        })
+        .then(res => {
+            if (!res.ok) {
+                throw new Error(`HTTP error! status: ${res.status}`);
+            }
+            return res.json();
+        })
+        .then(data => {
+            hideTypingIndicator();
+            
+            if (data.success) {
+                typewriterMessage('bot', data.response);
+            } else {
+                addAIMessage('bot', `Error: ${data.response || 'Unable to get response'}`);
+            }
+        })
+        .catch(error => {
+            hideTypingIndicator();
+            console.error('AI Chat Error:', error);
+            addAIMessage('bot', `Connection error. Please make sure the Flask server is running at ${API_BASE}`);
+        })
+        .finally(() => {
+            aiSendBtn.disabled = false;
+        });
+    }
+    
+    function showTypingIndicator() {
+        aiTyping.classList.add('show');
+    }
+    
+    function hideTypingIndicator() {
+        aiTyping.classList.remove('show');
+    }
+    
+    function typewriterMessage(sender, message, speed = 20) {
+        const messageDiv = document.createElement('div');
+        messageDiv.className = `ai-message ${sender}`;
+        messageDiv.style.opacity = '0.9';
+        
+        aiMessages.appendChild(messageDiv);
+        
+        setTimeout(() => {
+            aiMessages.scrollTop = aiMessages.scrollHeight;
+        }, 100);
+        
+        const formattedMessage = message
+            .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
+            .replace(/\*(.*?)\*/g, '<em>$1</em>')
+            .replace(/`(.*?)`/g, '<code>$1</code>')
+            .replace(/\n\n/g, '<br><br>')
+            .replace(/\n/g, '<br>');
+        
+        const parts = formattedMessage.split(/(<[^>]+>)/g);
+        let currentIndex = 0;
+        let finalHTML = '';
+        
+        function typeNextChar() {
+            if (currentIndex >= parts.length) {
+                messageDiv.style.opacity = '1';
+                
+                const messages = aiMessages.querySelectorAll('.ai-message');
+                if (messages.length > 50) {
+                    messages[0].remove();
+                }
+                return;
+            }
+            
+            const part = parts[currentIndex];
+            
+            if (part.startsWith('<') && part.endsWith('>')) {
+                finalHTML += part;
+                currentIndex++;
+                setTimeout(typeNextChar, 0);
+            } else {
+                if (part.length > 0) {
+                    finalHTML += part.charAt(0);
+                    parts[currentIndex] = part.substring(1);
+                    
+                    messageDiv.innerHTML = finalHTML;
+                    
+                    aiMessages.scrollTop = aiMessages.scrollHeight;
+                    
+                    setTimeout(typeNextChar, speed);
+                } else {
+                    currentIndex++;
+                    setTimeout(typeNextChar, 0);
+                }
+            }
+        }
+        
+        typeNextChar();
+    }
+    
+    function addAIMessage(sender, message) {
+        const messageDiv = document.createElement('div');
+        messageDiv.className = `ai-message ${sender}`;
+        
+        const formattedMessage = message
+            .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
+            .replace(/\*(.*?)\*/g, '<em>$1</em>')
+            .replace(/`(.*?)`/g, '<code>$1</code>')
+            .replace(/\n\n/g, '<br><br>')
+            .replace(/\n/g, '<br>');
+        
+        messageDiv.innerHTML = formattedMessage;
+        
+        aiMessages.appendChild(messageDiv);
+        
+        setTimeout(() => {
+            aiMessages.scrollTop = aiMessages.scrollHeight;
+        }, 100);
+        
+        const messages = aiMessages.querySelectorAll('.ai-message');
+        if (messages.length > 50) {
+            messages[0].remove();
+        }
+    }
+    
+    // Global functions
+    window.copyToClipboard = function(text) {
+        navigator.clipboard.writeText(text).then(() => {
+            const btn = event.target.closest('.copy-btn');
+            const originalHTML = btn.innerHTML;
+            btn.innerHTML = '<i class="fas fa-check"></i> Copied!';
+            btn.style.backgroundColor = 'rgba(6, 214, 160, 0.3)';
+            
+            setTimeout(() => {
+                btn.innerHTML = originalHTML;
+                btn.style.backgroundColor = '';
+            }, 2000);
+        }).catch(err => {
+            console.error('Copy f: ', err);
+           
+        });
+    };
+    
+    window.askQuestion = askQuestion;
+});
+</script>
+</body>
+</html>

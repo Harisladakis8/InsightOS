@@ -3,8 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>InsightOS - Complete OSINT & Crypto Platform</title>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <title>InsightOS - OSINT & Crypto Platform</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=DM+Sans:wght@500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         /* --- CSS Variables for Themes --- */
@@ -13,54 +13,58 @@
             --primary-light: #4895ef;
             --primary-dark: #3a0ca3;
             --secondary-color: #7209b7;
-            --ai-color: #06d6a0;
+            --accent-color: #06d6a0;
             --success-color: #4cc9f0;
-            --danger-color: #f72585;
-            --warning-color: #f8961e;
+            --danger-color: #e11d48;
+            --warning-color: #f59e0b;
             --info-color: #06d6a0;
-            
-            --critical-color: #ff002b;
-            --high-color: #ff6b6b;
-            --medium-color: #ffd166;
-            --low-color: #06d6a0;
-            --clean-color: #4cc9f0;
-            
-            --bg-color: #f8f9fa;
+
+            --bg-color: #f5f6fa;
+            --bg-subtle: #eef0f5;
             --card-bg: #ffffff;
             --sidebar-bg: #ffffff;
-            --text-color: #2b2d42;
-            --text-light: #6c757d;
-            --border-color: #e9ecef;
-            --shadow: rgba(0, 0, 0, 0.08);
-            --shadow-hover: rgba(0, 0, 0, 0.12);
-            
-            --sidebar-width: 320px;
-            --ai-sidebar-width: 400px;
-            --border-radius: 12px;
-            --transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+            --text-color: #1a1d2e;
+            --text-light: #6b7280;
+            --text-muted: #9ca3af;
+            --border-color: #e5e7eb;
+            --border-strong: #d1d5db;
+
+            --shadow-sm: 0 1px 2px rgba(16, 24, 40, 0.04);
+            --shadow-md: 0 2px 8px rgba(16, 24, 40, 0.06), 0 1px 2px rgba(16, 24, 40, 0.04);
+            --shadow-lg: 0 8px 24px rgba(16, 24, 40, 0.08), 0 2px 6px rgba(16, 24, 40, 0.04);
+            --shadow-xl: 0 20px 40px rgba(16, 24, 40, 0.10), 0 4px 12px rgba(16, 24, 40, 0.05);
+
+            --sidebar-width: 300px;
+            --border-radius-sm: 8px;
+            --border-radius: 10px;
+            --border-radius-lg: 14px;
+            --transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+
+            --font-display: 'DM Sans', 'Inter', sans-serif;
+            --font-body: 'Inter', sans-serif;
+            --font-mono: 'JetBrains Mono', 'Courier New', monospace;
         }
 
         /* --- Dark Theme Variables --- */
         body.dark {
-            --primary-color: #4895ef;
-            --primary-light: #4cc9f0;
-            --primary-dark: #3a0ca3;
-            --ai-color: #06d6a0;
-            
-            --critical-color: #ff5252;
-            --high-color: #ff6b6b;
-            --medium-color: #ffb74d;
-            --low-color: #4db6ac;
-            --clean-color: #4cc9f0;
-            
-            --bg-color: #121212;
-            --card-bg: #1e1e1e;
-            --sidebar-bg: #1a1a1a;
-            --text-color: #f8f9fa;
-            --text-light: #adb5bd;
-            --border-color: #2d2d2d;
-            --shadow: rgba(0, 0, 0, 0.25);
-            --shadow-hover: rgba(0, 0, 0, 0.35);
+            --primary-color: #6d83f2;
+            --primary-light: #8ba3f5;
+            --accent-color: #10b981;
+
+            --bg-color: #0b0d12;
+            --bg-subtle: #111318;
+            --card-bg: #16181f;
+            --sidebar-bg: #12141a;
+            --text-color: #e8eaf0;
+            --text-light: #9ca3af;
+            --text-muted: #6b7280;
+            --border-color: #262a35;
+            --border-strong: #353a47;
+
+            --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.2);
+            --shadow-md: 0 2px 8px rgba(0, 0, 0, 0.25);
+            --shadow-lg: 0 8px 24px rgba(0, 0, 0, 0.35);
+            --shadow-xl: 0 20px 40px rgba(0, 0, 0, 0.45);
         }
 
         * {
@@ -70,14 +74,17 @@
         }
 
         body {
-            font-family: 'Inter', sans-serif;
+            font-family: var(--font-body);
             background-color: var(--bg-color);
             color: var(--text-color);
             line-height: 1.6;
-            transition: var(--transition);
+            transition: background-color 0.3s ease, color 0.3s ease;
             display: flex;
             min-height: 100vh;
             overflow-x: hidden;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+            font-feature-settings: "cv02", "cv03", "cv04", "cv11";
         }
 
         .layout-container {
@@ -87,7 +94,7 @@
             position: relative;
         }
 
-        /* === ENHANCED SIDEBAR === */
+        /* === SIDEBAR === */
         .sidebar {
             position: fixed;
             top: 0;
@@ -95,7 +102,7 @@
             height: 100%;
             width: var(--sidebar-width);
             background-color: var(--sidebar-bg);
-            box-shadow: 4px 0 20px var(--shadow);
+            box-shadow: var(--shadow-md);
             display: flex;
             flex-direction: column;
             transition: var(--transition);
@@ -112,79 +119,131 @@
         .sidebar-header {
             display: flex;
             align-items: center;
-            margin-bottom: 20px;
-            padding: 24px 20px 20px 20px;
+            gap: 12px;
+            padding: 24px 22px 20px 22px;
             border-bottom: 1px solid var(--border-color);
             flex-shrink: 0;
         }
 
         .sidebar-header h1 {
+            font-family: var(--font-display);
             font-weight: 700;
-            font-size: 24px;
-            background: linear-gradient(90deg, var(--primary-color), var(--secondary-color));
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-            margin-left: 8px;
+            font-size: 22px;
+            letter-spacing: -0.02em;
+            color: var(--text-color);
         }
 
         .logo-icon {
-            width: 32px;
-            height: 32px;
+            width: 34px;
+            height: 34px;
             background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
-            border-radius: 8px;
+            border-radius: 9px;
             display: flex;
             align-items: center;
             justify-content: center;
             color: white;
-            font-weight: bold;
-            font-size: 18px;
+            font-weight: 700;
+            font-size: 16px;
+            font-family: var(--font-display);
+            box-shadow: 0 4px 12px rgba(67, 97, 238, 0.25);
         }
 
         /* === SIDEBAR SEARCH === */
         .sidebar-search {
-            padding: 0 20px 15px 20px;
+            padding: 16px 22px;
             border-bottom: 1px solid var(--border-color);
             flex-shrink: 0;
         }
 
         .search-container {
             position: relative;
+            display: flex;
+            align-items: center;
+            width: 100%;
+            height: 40px;
+            background-color: var(--bg-subtle);
+            border: 1px solid var(--border-color);
+            border-radius: var(--border-radius-sm);
+            transition: border-color 0.2s ease, background-color 0.2s ease, box-shadow 0.2s ease;
+        }
+
+        .search-container:hover {
+            border-color: var(--border-strong);
+        }
+
+        .search-container:focus-within {
+            border-color: var(--primary-color);
+            background-color: var(--card-bg);
+            box-shadow: 0 0 0 3px rgba(67, 97, 238, 0.10);
         }
 
         .search-icon {
-            position: absolute;
-            left: 14px;
-            top: 50%;
-            transform: translateY(-50%);
-            color: var(--text-light);
+            flex-shrink: 0;
+            width: 36px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--text-muted);
+            font-size: 13px;
+            pointer-events: none;
+            transition: color 0.2s ease;
+        }
+
+        .search-container:focus-within .search-icon {
+            color: var(--primary-color);
         }
 
         .search-input {
-            width: 100%;
-            padding: 12px 12px 12px 42px;
-            border-radius: var(--border-radius);
-            border: 1px solid var(--border-color);
-            background-color: var(--card-bg);
+            flex: 1;
+            min-width: 0;
+            height: 100%;
+            padding: 0 14px 0 2px;
+            border: none;
+            background: transparent;
             color: var(--text-color);
             font-size: 14px;
-            transition: var(--transition);
-        }
-
-        .search-input:focus {
+            font-family: var(--font-body);
             outline: none;
-            border-color: var(--primary-color);
-            box-shadow: 0 0 0 3px rgba(67, 97, 238, 0.15);
         }
 
-        /* === SIDEBAR NAVIGATION - SCROLLABLE === */
+        .search-input::placeholder {
+            color: var(--text-muted);
+        }
+
+        .search-clear {
+            flex-shrink: 0;
+            width: 28px;
+            height: 28px;
+            margin-right: 6px;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            background: transparent;
+            border: none;
+            border-radius: 6px;
+            color: var(--text-muted);
+            cursor: pointer;
+            font-size: 11px;
+            transition: all 0.15s ease;
+        }
+
+        .search-clear:hover {
+            background-color: var(--border-color);
+            color: var(--text-color);
+        }
+
+        .search-container.has-value .search-clear {
+            display: flex;
+        }
+
+        /* === SIDEBAR NAVIGATION === */
         .sidebar-nav {
             flex: 1;
             overflow-y: auto;
-            padding: 20px;
+            padding: 16px 14px;
             display: flex;
             flex-direction: column;
-            gap: 8px;
+            gap: 2px;
         }
 
         .sidebar-nav::-webkit-scrollbar {
@@ -196,96 +255,99 @@
         }
 
         .sidebar-nav::-webkit-scrollbar-thumb {
-            background: var(--border-color);
+            background: var(--border-strong);
             border-radius: 3px;
         }
 
         .sidebar-nav::-webkit-scrollbar-thumb:hover {
-            background: var(--text-light);
+            background: var(--text-muted);
         }
 
-        /* === ORIGINAL TRACKER BUTTONS === */
+        .nav-section-label {
+            font-size: 11px;
+            font-weight: 600;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            padding: 12px 10px 8px 10px;
+            margin-top: 4px;
+        }
+
+        /* === TRACKER BUTTONS === */
         .tracker-btn {
             display: flex;
             align-items: center;
-            gap: 14px;
-            padding: 16px;
-            margin-bottom: 4px;
+            gap: 12px;
+            padding: 10px 12px;
             border: none;
-            border-radius: var(--border-radius);
+            border-radius: var(--border-radius-sm);
             cursor: pointer;
             background: transparent;
             color: var(--text-light);
             font-weight: 500;
-            font-size: 15px;
+            font-size: 14px;
+            font-family: var(--font-body);
             transition: var(--transition);
             text-align: left;
             position: relative;
-            overflow: hidden;
             width: 100%;
         }
 
-        .tracker-btn::before {
-            content: '';
-            position: absolute;
-            left: 0;
-            top: 0;
-            height: 100%;
-            width: 4px;
-            background-color: var(--primary-color);
-            transform: scaleY(0);
-            transition: var(--transition);
-            border-radius: 0 4px 4px 0;
+        .tracker-btn:hover {
+            background-color: var(--bg-subtle);
+            color: var(--text-color);
         }
 
-        .tracker-btn.active, 
-        .tracker-btn:hover {
+        .tracker-btn.active {
             background-color: rgba(67, 97, 238, 0.08);
             color: var(--primary-color);
+            font-weight: 600;
         }
 
-        .tracker-btn.active::before {
-            transform: scaleY(1);
+        body.dark .tracker-btn.active {
+            background-color: rgba(109, 131, 242, 0.12);
         }
 
         .tracker-btn i {
-            width: 20px;
+            width: 18px;
             text-align: center;
+            font-size: 14px;
         }
 
-        /* === CRYPTO ANALYSIS CATEGORY === */
+        /* === CATEGORY === */
         .sidebar-category {
-            margin-top: 20px;
-            margin-bottom: 10px;
+            margin-top: 8px;
         }
 
         .category-header {
             display: flex;
             align-items: center;
-            margin-bottom: 10px;
-            padding: 12px 16px;
-            border-radius: var(--border-radius);
-            background: linear-gradient(90deg, rgba(67, 97, 238, 0.1), rgba(114, 9, 183, 0.1));
-            color: var(--primary-color);
+            padding: 10px 12px;
+            border-radius: var(--border-radius-sm);
+            color: var(--text-light);
             font-weight: 600;
-            font-size: 14px;
+            font-size: 12px;
+            text-transform: uppercase;
+            letter-spacing: 0.06em;
             cursor: pointer;
             transition: var(--transition);
+            user-select: none;
         }
 
         .category-header:hover {
-            background: linear-gradient(90deg, rgba(67, 97, 238, 0.2), rgba(114, 9, 183, 0.2));
+            color: var(--text-color);
         }
 
-        .category-header i {
+        .category-header i:first-child {
             margin-right: 10px;
-            font-size: 16px;
+            font-size: 13px;
+            color: var(--primary-color);
         }
 
         .category-header .toggle-icon {
             margin-left: auto;
-            transition: var(--transition);
-            font-size: 12px;
+            transition: transform 0.2s ease;
+            font-size: 10px;
         }
 
         .category-header.collapsed .toggle-icon {
@@ -293,12 +355,12 @@
         }
 
         .category-items {
-            display: grid;
-            grid-template-columns: 1fr;
-            gap: 6px;
+            display: flex;
+            flex-direction: column;
+            gap: 2px;
             overflow: hidden;
             transition: var(--transition);
-            margin-bottom: 10px;
+            padding: 4px 0;
         }
 
         .category-items.collapsed {
@@ -310,98 +372,70 @@
             display: flex;
             align-items: center;
             gap: 12px;
-            padding: 12px 16px;
+            padding: 9px 12px;
             border: none;
-            border-radius: var(--border-radius);
+            border-radius: var(--border-radius-sm);
             cursor: pointer;
             background: transparent;
             color: var(--text-light);
             font-weight: 500;
-            font-size: 14px;
+            font-size: 13.5px;
+            font-family: var(--font-body);
             transition: var(--transition);
             text-align: left;
-            position: relative;
-            overflow: hidden;
             width: 100%;
         }
 
-        .crypto-tool-btn::before {
-            content: '';
-            position: absolute;
-            left: 0;
-            top: 0;
-            height: 100%;
-            width: 3px;
-            background-color: var(--ai-color);
-            transform: scaleY(0);
-            transition: var(--transition);
-            border-radius: 0 4px 4px 0;
-        }
-
-        .crypto-tool-btn.active, 
         .crypto-tool-btn:hover {
+            background-color: var(--bg-subtle);
+            color: var(--text-color);
+        }
+
+        .crypto-tool-btn.active {
             background-color: rgba(6, 214, 160, 0.08);
-            color: var(--ai-color);
-        }
-
-        .crypto-tool-btn.active::before {
-            transform: scaleY(1);
-        }
-
-        .crypto-tool-btn i {
-            width: 20px;
-            text-align: center;
-            font-size: 16px;
-        }
-
-        .crypto-tool-btn .badge {
-            margin-left: auto;
-            padding: 2px 8px;
-            border-radius: 10px;
-            font-size: 11px;
+            color: var(--accent-color);
             font-weight: 600;
         }
 
-        .badge-encode {
-            background-color: var(--primary-color);
-            color: white;
+        body.dark .crypto-tool-btn.active {
+            background-color: rgba(16, 185, 129, 0.12);
         }
 
-        .badge-decode {
-            background-color: var(--secondary-color);
-            color: white;
+        .crypto-tool-btn i {
+            width: 16px;
+            text-align: center;
+            font-size: 13px;
         }
 
-        .badge-hash {
-            background-color: var(--ai-color);
-            color: white;
+        .crypto-tool-btn span:not(.badge) {
+            flex: 1;
         }
 
-        .badge-cipher {
-            background-color: var(--warning-color);
-            color: white;
+        .badge {
+            padding: 2px 7px;
+            border-radius: 6px;
+            font-size: 10px;
+            font-weight: 600;
+            letter-spacing: 0.04em;
+            font-family: var(--font-body);
         }
 
-        .badge-encrypt {
-            background-color: var(--danger-color);
-            color: white;
-        }
+        .badge-encode  { background: rgba(67, 97, 238, 0.12);  color: var(--primary-color); }
+        .badge-decode  { background: rgba(114, 9, 183, 0.12);  color: var(--secondary-color); }
+        .badge-hash    { background: rgba(6, 214, 160, 0.15);  color: var(--accent-color); }
+        .badge-cipher  { background: rgba(245, 158, 11, 0.15); color: var(--warning-color); }
+        .badge-encrypt { background: rgba(225, 29, 72, 0.12);  color: var(--danger-color); }
+        .badge-calc    { background: rgba(76, 201, 240, 0.15); color: var(--success-color); }
 
-        .badge-calc {
-            background-color: var(--info-color);
-            color: white;
-        }
+        body.dark .badge-encode  { background: rgba(109, 131, 242, 0.18); }
+        body.dark .badge-hash    { background: rgba(16, 185, 129, 0.20); }
 
-        /* === STATIC SIDEBAR FOOTER === */
+        /* === SIDEBAR FOOTER === */
         .sidebar-footer {
-            margin-top: auto;
-            padding: 20px;
+            padding: 16px 18px;
             border-top: 1px solid var(--border-color);
             background-color: var(--sidebar-bg);
             flex-shrink: 0;
-            position: sticky;
-            bottom: 0;
-            z-index: 10;
         }
 
         .theme-toggle {
@@ -410,25 +444,32 @@
             justify-content: center;
             gap: 10px;
             width: 100%;
-            padding: 14px;
-            border-radius: var(--border-radius);
-            border: none;
+            padding: 11px;
+            border-radius: var(--border-radius-sm);
+            border: 1px solid var(--border-color);
             cursor: pointer;
-            background-color: rgba(67, 97, 238, 0.1);
-            color: var(--primary-color);
-            font-weight: 600;
+            background-color: var(--bg-subtle);
+            color: var(--text-color);
+            font-weight: 500;
+            font-size: 13.5px;
+            font-family: var(--font-body);
             transition: var(--transition);
         }
 
         .theme-toggle:hover {
-            background-color: rgba(67, 97, 238, 0.2);
+            border-color: var(--border-strong);
+            background-color: var(--card-bg);
+        }
+
+        .theme-toggle i {
+            color: var(--primary-color);
         }
 
         /* === MAIN CONTENT === */
         .main {
             flex: 1;
             margin-left: var(--sidebar-width);
-            padding: 40px;
+            padding: 48px 40px;
             transition: var(--transition);
             min-height: 100vh;
             display: flex;
@@ -441,58 +482,53 @@
             margin-left: 0;
         }
 
-        .ai-sidebar.open ~ .main {
-            margin-right: var(--ai-sidebar-width);
-        }
-
         /* === CARD === */
         .card {
             background-color: var(--card-bg);
-            padding: 40px;
-            border-radius: var(--border-radius);
-            box-shadow: 0 10px 30px var(--shadow);
-            max-width: 900px;
+            padding: 40px 44px;
+            border-radius: var(--border-radius-lg);
+            box-shadow: var(--shadow-md);
+            max-width: 880px;
             width: 100%;
             transition: var(--transition);
             border: 1px solid var(--border-color);
-        }
-
-        .card:hover {
-            box-shadow: 0 15px 40px var(--shadow-hover);
         }
 
         .card-header {
             margin-bottom: 32px;
             display: flex;
             align-items: center;
-            gap: 12px;
+            gap: 14px;
+            padding-bottom: 24px;
+            border-bottom: 1px solid var(--border-color);
         }
 
         .card-header h2 {
+            font-family: var(--font-display);
             font-weight: 700;
-            font-size: 28px;
-            background: linear-gradient(90deg, var(--primary-color), var(--secondary-color));
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
+            font-size: 24px;
+            letter-spacing: -0.02em;
+            color: var(--text-color);
         }
 
         .card-icon {
-            width: 40px;
-            height: 40px;
+            width: 44px;
+            height: 44px;
             background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
-            border-radius: 10px;
+            border-radius: 11px;
             display: flex;
             align-items: center;
             justify-content: center;
             color: white;
+            font-size: 17px;
+            box-shadow: 0 4px 12px rgba(67, 97, 238, 0.20);
         }
 
         /* === FORM === */
         .track-form {
             display: flex;
             flex-direction: column;
-            gap: 20px;
+            gap: 22px;
         }
 
         .input-group {
@@ -503,44 +539,54 @@
 
         .input-label {
             font-weight: 600;
-            font-size: 15px;
+            font-size: 13.5px;
             color: var(--text-color);
+            letter-spacing: -0.005em;
         }
 
         textarea, input[type="text"] {
             width: 100%;
-            padding: 18px;
-            border-radius: var(--border-radius);
+            padding: 13px 16px;
+            border-radius: var(--border-radius-sm);
             border: 1px solid var(--border-color);
-            font-size: 16px;
-            background-color: var(--card-bg);
+            font-size: 14.5px;
+            background-color: var(--bg-subtle);
             color: var(--text-color);
             transition: var(--transition);
-            font-family: 'Inter', sans-serif;
+            font-family: var(--font-body);
+        }
+
+        textarea {
+            font-family: var(--font-mono);
+            font-size: 13.5px;
+            resize: vertical;
+            min-height: 110px;
         }
 
         textarea:focus, input[type="text"]:focus {
             border-color: var(--primary-color);
             outline: none;
-            box-shadow: 0 0 0 3px rgba(67, 97, 238, 0.15);
+            background-color: var(--card-bg);
+            box-shadow: 0 0 0 3px rgba(67, 97, 238, 0.10);
         }
 
         .input-hint {
-            font-size: 14px;
+            font-size: 13px;
             color: var(--text-light);
-            margin-top: 4px;
         }
 
         .btn {
             position: relative;
             width: 100%;
-            padding: 18px;
+            padding: 13px 18px;
             border: none;
-            border-radius: var(--border-radius);
-            background: linear-gradient(90deg, var(--primary-color), var(--secondary-color));
+            border-radius: var(--border-radius-sm);
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
             color: white;
-            font-size: 17px;
+            font-size: 14.5px;
             font-weight: 600;
+            font-family: var(--font-body);
+            letter-spacing: -0.005em;
             cursor: pointer;
             overflow: hidden;
             transition: var(--transition);
@@ -548,11 +594,12 @@
             align-items: center;
             justify-content: center;
             gap: 10px;
+            box-shadow: 0 4px 12px rgba(67, 97, 238, 0.22);
         }
 
         .btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 8px 20px rgba(67, 97, 238, 0.3);
+            transform: translateY(-1px);
+            box-shadow: 0 8px 20px rgba(67, 97, 238, 0.30);
         }
 
         .btn:active {
@@ -561,24 +608,59 @@
 
         .btn.loading {
             pointer-events: none;
-            opacity: 0.8;
+            opacity: 0.85;
         }
 
         .btn.loading::after {
             content: "";
             position: absolute;
             right: 20px;
-            width: 20px;
-            height: 20px;
-            border: 3px solid rgba(255, 255, 255, 0.3);
-            border-top: 3px solid white;
+            width: 16px;
+            height: 16px;
+            border: 2.5px solid rgba(255, 255, 255, 0.3);
+            border-top: 2.5px solid white;
             border-radius: 50%;
-            animation: spin 1s linear infinite;
+            animation: spin 0.8s linear infinite;
         }
 
         @keyframes spin {
             0% { transform: rotate(0deg); }
             100% { transform: rotate(360deg); }
+        }
+
+        /* === RADIO MODE === */
+        .mode-group {
+            display: flex;
+            gap: 8px;
+            background-color: var(--bg-subtle);
+            padding: 4px;
+            border-radius: var(--border-radius-sm);
+            border: 1px solid var(--border-color);
+            width: fit-content;
+        }
+
+        .mode-group label {
+            display: flex;
+            align-items: center;
+            gap: 7px;
+            padding: 8px 16px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 13.5px;
+            font-weight: 500;
+            color: var(--text-light);
+            transition: var(--transition);
+        }
+
+        .mode-group label:has(input:checked) {
+            background-color: var(--card-bg);
+            color: var(--primary-color);
+            font-weight: 600;
+            box-shadow: var(--shadow-sm);
+        }
+
+        .mode-group input[type="radio"] {
+            accent-color: var(--primary-color);
         }
 
         /* === FILE UPLOAD === */
@@ -588,397 +670,342 @@
 
         .file-label {
             display: flex;
+            flex-direction: column;
             align-items: center;
             justify-content: center;
             gap: 10px;
-            padding: 18px;
-            border: 2px dashed var(--border-color);
+            padding: 32px 20px;
+            border: 1.5px dashed var(--border-strong);
             border-radius: var(--border-radius);
-            background-color: var(--card-bg);
+            background-color: var(--bg-subtle);
             cursor: pointer;
             transition: var(--transition);
             text-align: center;
+            color: var(--text-light);
+            font-size: 14px;
+        }
+
+        .file-label i {
+            font-size: 26px;
+            color: var(--primary-color);
         }
 
         .file-label:hover {
             border-color: var(--primary-color);
-            background-color: rgba(67, 97, 238, 0.05);
+            background-color: rgba(67, 97, 238, 0.04);
+            color: var(--text-color);
         }
 
         .file-name {
             margin-top: 10px;
-            font-size: 14px;
+            font-size: 13px;
             color: var(--text-light);
             text-align: center;
+            font-family: var(--font-mono);
         }
 
         /* === RESULTS === */
         .result-container {
-            margin-top: 40px;
+            margin-top: 28px;
             width: 100%;
+            max-width: 880px;
         }
 
         .result {
             background-color: var(--card-bg);
-            padding: 28px;
-            border-radius: var(--border-radius);
-            box-shadow: 0 6px 20px var(--shadow);
+            padding: 28px 32px;
+            border-radius: var(--border-radius-lg);
+            box-shadow: var(--shadow-md);
             transition: var(--transition);
-            border-left: 5px solid var(--primary-color);
+            border: 1px solid var(--border-color);
+            border-left: 3px solid var(--primary-color);
             position: relative;
+            animation: slideUp 0.3s ease;
+        }
+
+        @keyframes slideUp {
+            from { opacity: 0; transform: translateY(8px); }
+            to { opacity: 1; transform: translateY(0); }
         }
 
         .result-header {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 20px;
+            margin-bottom: 22px;
+            padding-bottom: 16px;
+            border-bottom: 1px solid var(--border-color);
         }
 
         .result-title {
+            font-family: var(--font-display);
             font-weight: 700;
-            font-size: 20px;
+            font-size: 17px;
+            color: var(--text-color);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            letter-spacing: -0.01em;
+        }
+
+        .result-title i {
             color: var(--primary-color);
+            font-size: 15px;
         }
 
         .clear {
-            padding: 8px 16px;
-            border-radius: 8px;
-            border: none;
-            background-color: rgba(247, 37, 133, 0.1);
-            color: var(--danger-color);
+            padding: 7px 14px;
+            border-radius: 7px;
+            border: 1px solid var(--border-color);
+            background-color: transparent;
+            color: var(--text-light);
             cursor: pointer;
-            font-weight: 600;
+            font-weight: 500;
+            font-size: 12.5px;
+            font-family: var(--font-body);
             transition: var(--transition);
         }
 
         .clear:hover {
-            background-color: rgba(247, 37, 133, 0.2);
+            background-color: rgba(225, 29, 72, 0.08);
+            color: var(--danger-color);
+            border-color: rgba(225, 29, 72, 0.2);
         }
 
         .result-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
-            gap: 16px;
+            grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+            gap: 12px;
         }
 
         .result-item {
             display: flex;
             flex-direction: column;
-            padding: 16px;
-            background-color: rgba(67, 97, 238, 0.05);
-            border-radius: 10px;
+            padding: 14px 16px;
+            background-color: var(--bg-subtle);
+            border-radius: var(--border-radius-sm);
+            border: 1px solid var(--border-color);
             transition: var(--transition);
         }
 
         .result-item:hover {
-            background-color: rgba(67, 97, 238, 0.1);
-            transform: translateY(-2px);
+            border-color: var(--border-strong);
+            box-shadow: var(--shadow-sm);
         }
 
         .result-key {
             font-weight: 600;
-            font-size: 14px;
-            color: var(--text-light);
-            margin-bottom: 4px;
+            font-size: 11px;
+            color: var(--text-muted);
+            margin-bottom: 6px;
             text-transform: uppercase;
-            letter-spacing: 0.5px;
+            letter-spacing: 0.06em;
         }
 
         .result-value {
             font-weight: 500;
-            font-size: 16px;
+            font-size: 14px;
             color: var(--text-color);
             word-break: break-word;
+            line-height: 1.5;
         }
 
         .result-value.error {
             color: var(--danger-color);
         }
 
-        /* === CRYPTO RESULTS === */
-        .crypto-result {
-            background-color: var(--card-bg);
-            border: 1px solid var(--border-color);
-            border-radius: var(--border-radius);
-            padding: 20px;
-            margin-top: 20px;
-            font-family: 'Courier New', monospace;
-            overflow-x: auto;
+        .result-value.mono {
+            font-family: var(--font-mono);
+            font-size: 13px;
         }
 
-        .crypto-result-header {
+        /* === RESULT SECTIONS (for nested data) === */
+        .result-section {
+            margin-top: 22px;
+            padding-top: 22px;
+            border-top: 1px solid var(--border-color);
+        }
+
+        .result-section:first-of-type {
+            margin-top: 0;
+            padding-top: 0;
+            border-top: none;
+        }
+
+        .section-title {
             display: flex;
-            justify-content: space-between;
             align-items: center;
-            margin-bottom: 15px;
-            padding-bottom: 10px;
-            border-bottom: 1px solid var(--border-color);
+            gap: 10px;
+            font-family: var(--font-display);
+            font-weight: 600;
+            font-size: 14px;
+            color: var(--text-color);
+            margin-bottom: 14px;
+            text-transform: uppercase;
+            letter-spacing: 0.04em;
         }
 
-        .crypto-result-label {
-            font-weight: 700;
+        .section-title i {
+            width: 26px;
+            height: 26px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            background: rgba(67, 97, 238, 0.10);
             color: var(--primary-color);
-            font-size: 16px;
+            border-radius: 7px;
+            font-size: 12px;
+        }
+
+        body.dark .section-title i {
+            background: rgba(109, 131, 242, 0.15);
+        }
+
+        /* Status pill badges */
+        .status-pill {
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            padding: 3px 10px;
+            border-radius: 999px;
+            font-size: 12px;
+            font-weight: 600;
+            letter-spacing: 0.01em;
+        }
+
+        .status-pill.good    { background: rgba(6, 214, 160, 0.12);  color: var(--accent-color); }
+        .status-pill.bad     { background: rgba(225, 29, 72, 0.10);  color: var(--danger-color); }
+        .status-pill.neutral { background: var(--bg-subtle);         color: var(--text-light); border: 1px solid var(--border-color); }
+        .status-pill.warn    { background: rgba(245, 158, 11, 0.15); color: var(--warning-color); }
+
+        /* Tag/chip list for arrays (mx records, selectors, ips) */
+        .chip-list {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 6px;
+            margin-top: 4px;
+        }
+
+        .chip {
+            display: inline-flex;
+            align-items: center;
+            padding: 4px 10px;
+            background: var(--bg-subtle);
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+            font-family: var(--font-mono);
+            font-size: 12px;
+            color: var(--text-color);
+            word-break: break-all;
+        }
+
+        /* Security score bar */
+        .score-card {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            padding: 16px 18px;
+            background: var(--bg-subtle);
+            border: 1px solid var(--border-color);
+            border-radius: var(--border-radius-sm);
+            grid-column: 1 / -1;
+        }
+
+        .score-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 12px;
+        }
+
+        .score-label {
+            font-size: 13px;
+            font-weight: 600;
+            color: var(--text-color);
+        }
+
+        .score-value {
+            font-family: var(--font-display);
+            font-weight: 700;
+            font-size: 22px;
+            letter-spacing: -0.02em;
+        }
+
+        .score-value.excellent { color: var(--accent-color); }
+        .score-value.good      { color: var(--success-color); }
+        .score-value.weak      { color: var(--warning-color); }
+        .score-value.poor      { color: var(--danger-color); }
+
+        .score-bar {
+            height: 6px;
+            background: var(--border-color);
+            border-radius: 3px;
+            overflow: hidden;
+        }
+
+        .score-bar-fill {
+            height: 100%;
+            border-radius: 3px;
+            transition: width 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .score-bar-fill.excellent { background: var(--accent-color); }
+        .score-bar-fill.good      { background: var(--success-color); }
+        .score-bar-fill.weak      { background: var(--warning-color); }
+        .score-bar-fill.poor      { background: var(--danger-color); }
+
+        .score-notes {
+            margin-top: 4px;
+            font-size: 12.5px;
+            color: var(--text-light);
+            line-height: 1.6;
+        }
+
+        .score-notes ul {
+            list-style: none;
+            padding-left: 0;
+            margin-top: 4px;
+        }
+
+        .score-notes li::before {
+            content: "•";
+            color: var(--warning-color);
+            margin-right: 8px;
+            font-weight: bold;
+        }
+
+        /* === COPY BUTTONS === */
+        .result-actions {
+            margin-top: 20px;
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
         }
 
         .copy-btn {
-            padding: 6px 12px;
-            background-color: rgba(6, 214, 160, 0.1);
-            color: var(--ai-color);
-            border: none;
-            border-radius: 6px;
+            padding: 8px 14px;
+            background-color: var(--bg-subtle);
+            color: var(--text-color);
+            border: 1px solid var(--border-color);
+            border-radius: 7px;
             cursor: pointer;
-            font-size: 12px;
-            font-weight: 600;
+            font-size: 12.5px;
+            font-weight: 500;
+            font-family: var(--font-body);
             transition: var(--transition);
             display: flex;
             align-items: center;
-            gap: 5px;
+            gap: 7px;
         }
 
         .copy-btn:hover {
-            background-color: rgba(6, 214, 160, 0.2);
-            transform: translateY(-1px);
-        }
-
-        /* === AI CHAT SIDEBAR === */
-        .ai-sidebar {
-            position: fixed;
-            top: 0;
-            right: -400px;
-            height: 100%;
-            width: var(--ai-sidebar-width);
-            background-color: var(--sidebar-bg);
-            box-shadow: -4px 0 20px var(--shadow);
-            display: flex;
-            flex-direction: column;
-            transition: var(--transition);
-            z-index: 900;
-            border-left: 1px solid var(--border-color);
-            overflow: hidden;
-        }
-
-        .ai-sidebar.open {
-            right: 0;
-        }
-
-        .ai-header {
-            padding: 24px;
-            border-bottom: 1px solid var(--border-color);
-        }
-        
-        body.dark .ai-header {
-            background-color: #222;
-        }
-
-        .ai-header-content {
-            display: flex;
-            align-items: center;
-            margin-bottom: 10px;
-        }
-
-        .ai-logo-icon {
-            width: 32px;
-            height: 32px;
-            background: linear-gradient(135deg, var(--ai-color), var(--primary-color));
-            border-radius: 8px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: white;
-            font-weight: bold;
-            font-size: 16px;
-            margin-right: 10px;
-        }
-
-        .ai-header h1 {
-            font-weight: 700;
-            font-size: 24px;
-            background: linear-gradient(90deg, var(--primary-color), var(--secondary-color));
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-            margin-left: 8px;
-        }
-
-        .ai-header p {
-            margin-top: 8px;
-            opacity: 0.9;
-            font-size: 14px;
-            color: var(--text-light);
-        }
-
-        .ai-chat-container {
-            flex: 1;
-            display: flex;
-            flex-direction: column;
-            overflow: hidden;
-        }
-
-        .ai-messages {
-            flex: 1;
-            padding: 20px;
-            overflow-y: auto;
-            display: flex;
-            flex-direction: column;
-            gap: 16px;
-        }
-
-        .ai-message {
-            max-width: 85%;
-            padding: 12px 16px;
-            border-radius: 18px;
-            font-size: 14px;
-            line-height: 1.5;
-            animation: fadeIn 0.3s ease;
-        }
-
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(10px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
-        .ai-message.user {
-            align-self: flex-end;
-            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
-            color: white;
-            border-bottom-right-radius: 4px;
-        }
-
-        .ai-message.bot {
-            align-self: flex-start;
-            background-color: rgba(6, 214, 160, 0.1);
-            border: 1px solid var(--ai-color);
-            border-bottom-left-radius: 4px;
-            color: var(--text-color);
-        }
-
-        .ai-input-container {
-            padding: 20px;
-            border-top: 1px solid var(--border-color);
             background-color: var(--card-bg);
+            border-color: var(--primary-color);
+            color: var(--primary-color);
         }
 
-        .ai-input-wrapper {
-            display: flex;
-            gap: 10px;
-            align-items: flex-end;
-        }
-
-        .ai-input {
-            flex: 1;
-            padding: 12px 16px;
-            border-radius: var(--border-radius);
-            border: 1px solid var(--border-color);
-            background-color: var(--card-bg);
-            color: var(--text-color);
-            font-size: 14px;
-            resize: none;
-            min-height: 50px;
-            max-height: 120px;
-            transition: var(--transition);
-        }
-
-        .ai-input:focus {
-            outline: none;
-            border-color: var(--ai-color);
-            box-shadow: 0 0 0 3px rgba(6, 214, 160, 0.15);
-        }
-
-        .ai-send-btn {
-            width: 50px;
-            height: 50px;
-            border-radius: 50%;
-            border: none;
-            background: linear-gradient(135deg, var(--ai-color), var(--primary-color));
-            color: white;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            transition: var(--transition);
-        }
-
-        .ai-send-btn:hover {
-            transform: scale(1.05);
-            box-shadow: 0 5px 15px rgba(6, 214, 160, 0.3);
-        }
-
-        .ai-send-btn:disabled {
-            opacity: 0.5;
-            cursor: not-allowed;
-        }
-
-        .ai-typing {
-            padding: 8px 16px;
-            color: var(--text-light);
-            font-style: italic;
-            font-size: 13px;
-            display: none;
-            background-color: rgba(6, 214, 160, 0.05);
-            border-radius: 8px;
-            margin: 0 20px 10px 20px;
-            animation: pulse 2s infinite;
-        }
-
-        .ai-typing.show {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-
-        @keyframes pulse {
-            0% { opacity: 0.6; }
-            50% { opacity: 1; }
-            100% { opacity: 0.6; }
-        }
-
-        .ai-typing i {
-            font-size: 16px;
-            color: var(--ai-color);
-        }
-
-        /* === AI TRIGGER === */
-        .ai-trigger {
-            position: fixed;
-            bottom: 30px;
-            right: 30px;
-            width: 60px;
-            height: 60px;
-            border-radius: 50%;
-            background: linear-gradient(135deg, var(--ai-color), var(--primary-color));
-            color: white;
-            border: none;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 24px;
-            box-shadow: 0 8px 25px rgba(6, 214, 160, 0.4);
-            transition: var(--transition);
-            z-index: 800;
-        }
-
-        .ai-trigger:hover {
-            transform: scale(1.1);
-            box-shadow: 0 12px 30px rgba(6, 214, 160, 0.6);
-        }
-
-        .ai-badge {
-            position: absolute;
-            top: -5px;
-            right: -5px;
-            background-color: var(--danger-color);
-            color: white;
+        .copy-btn i {
             font-size: 12px;
-            font-weight: bold;
-            width: 20px;
-            height: 20px;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
         }
 
         /* === HAMBURGER MENU === */
@@ -994,27 +1021,28 @@
             align-items: center;
             cursor: pointer;
             background-color: var(--card-bg);
-            border-radius: var(--border-radius);
-            box-shadow: 0 4px 12px var(--shadow);
+            border: 1px solid var(--border-color);
+            border-radius: var(--border-radius-sm);
+            box-shadow: var(--shadow-md);
             z-index: 1100;
             transition: var(--transition);
         }
 
         .hamburger:hover {
-            box-shadow: 0 6px 16px var(--shadow-hover);
+            box-shadow: var(--shadow-lg);
         }
 
         .hamburger div {
-            height: 3px;
-            width: 24px;
-            background-color: var(--primary-color);
-            border-radius: 2px;
+            height: 2px;
+            width: 20px;
+            background-color: var(--text-color);
+            border-radius: 1px;
             transition: var(--transition);
-            margin: 3px 0;
+            margin: 2.5px 0;
         }
 
         .hamburger.active div:nth-child(1) {
-            transform: rotate(45deg) translate(6px, 6px);
+            transform: rotate(45deg) translate(5px, 5px);
         }
 
         .hamburger.active div:nth-child(2) {
@@ -1022,27 +1050,34 @@
         }
 
         .hamburger.active div:nth-child(3) {
-            transform: rotate(-45deg) translate(6px, -6px);
+            transform: rotate(-45deg) translate(5px, -5px);
+        }
+
+        /* === FOOTER === */
+        .footer {
+            margin-top: 40px;
+            text-align: center;
+            color: var(--text-muted);
+            font-size: 13px;
+        }
+
+        .footer p {
+            line-height: 1.8;
         }
 
         /* === RESPONSIVE === */
         @media (max-width: 1024px) {
             .card {
-                max-width: 95%;
-                padding: 30px;
+                max-width: 100%;
+                padding: 32px 28px;
             }
-            
+
+            .result {
+                padding: 24px;
+            }
+
             .result-grid {
                 grid-template-columns: 1fr;
-            }
-            
-            .ai-sidebar {
-                width: 350px;
-                right: -350px;
-            }
-            
-            .ai-sidebar.open ~ .main {
-                margin-right: 350px;
             }
         }
 
@@ -1050,68 +1085,55 @@
             .hamburger {
                 display: flex;
             }
-            
+
             .sidebar {
                 transform: translateX(-100%);
                 width: 280px;
             }
-            
+
             .sidebar.open {
                 transform: translateX(0);
             }
-            
+
             .main {
                 margin-left: 0;
-                padding: 30px 20px;
+                padding: 80px 20px 40px 20px;
             }
-            
+
             .card {
-                padding: 24px;
+                padding: 24px 20px;
             }
-            
+
+            .card-header {
+                gap: 12px;
+            }
+
             .card-header h2 {
-                font-size: 24px;
-            }
-            
-            .ai-sidebar {
-                width: 100%;
-                right: -100%;
-            }
-            
-            .ai-sidebar.open {
-                right: 0;
-            }
-            
-            .ai-sidebar.open ~ .main {
-                margin-right: 0;
-            }
-            
-            .ai-trigger {
-                bottom: 20px;
-                right: 20px;
-                width: 50px;
-                height: 50px;
                 font-size: 20px;
             }
         }
 
         @media (max-width: 480px) {
             .card {
-                padding: 20px;
+                padding: 20px 16px;
             }
-            
-            .btn, input[type="text"], textarea {
-                padding: 16px;
-            }
-            
+
             .result {
-                padding: 20px;
+                padding: 20px 16px;
             }
-            
+
             .card-header {
                 flex-direction: column;
                 align-items: flex-start;
-                gap: 8px;
+                gap: 10px;
+            }
+
+            .result-actions {
+                flex-direction: column;
+            }
+
+            .copy-btn {
+                justify-content: center;
             }
         }
     </style>
@@ -1119,62 +1141,6 @@
 <body>
 
 <div class="layout-container">
-    <!-- AI Chat Trigger Button -->
-    <button class="ai-trigger" id="aiTrigger">
-        <i class="fas fa-robot"></i>
-        <span class="ai-badge" id="aiBadge" style="display: none;">!</span>
-    </button>
-
-    <!-- AI Chat Sidebar -->
-    <div class="ai-sidebar" id="aiSidebar">
-        <div class="ai-header">
-            <div class="ai-header-content">
-                 <div class="logo-icon">I</div>
-                <h1>InsightOS AI Helper</h1>
-            </div>
-            <p>Ask me anything about OSINT, threat intelligence, or how to use this platform</p>
-        </div>
-        
-        <div class="ai-quick-tips">
-            <h4>Quick Questions:</h4>
-            <div>
-                <span class="ai-quick-tip" onclick="askQuestion('What is OSINT?')">What is OSINT?</span>
-                <span class="ai-quick-tip" onclick="askQuestion('How to analyze an IP address?')">IP Analysis</span>
-                <span class="ai-quick-tip" onclick="askQuestion('What is Threat Intelligence?')">Threat Intel</span>
-                <span class="ai-quick-tip" onclick="askQuestion('How to track a domain?')">Domain Tracking</span>
-                <span class="ai-quick-tip" onclick="askQuestion('What is Base64 encoding?')">Base64 Encoding</span>
-                <span class="ai-quick-tip" onclick="askQuestion('How does ROT13 work?')">ROT13 Cipher</span>
-            </div>
-        </div>
-        
-        <div class="ai-chat-container">
-            <div class="ai-messages" id="aiMessages">
-                <!-- Initial welcome message -->
-                <div class="ai-message bot">
-                    👋 Hello! I'm the InsightOS AI Helper. I can assist you with OSINT investigations, crypto analysis, threat intelligence, and guide you through using the platform. How can I help you today?
-                </div>
-            </div>
-            
-            <div class="ai-typing" id="aiTyping">
-                <i class="fas fa-ellipsis-h"></i> AI is thinking...
-            </div>
-            
-            <div class="ai-input-container">
-                <div class="ai-input-wrapper">
-                    <textarea 
-                        class="ai-input" 
-                        id="aiInput" 
-                        placeholder="Ask me anything ..."
-                        rows="2"
-                    ></textarea>
-                    <button class="ai-send-btn" id="aiSendBtn">
-                        <i class="fas fa-paper-plane"></i>
-                    </button>
-                </div>
-            </div>
-        </div>
-    </div>
-
     <!-- Hamburger Menu -->
     <div class="hamburger" id="hamburger">
         <div></div>
@@ -1182,24 +1148,30 @@
         <div></div>
     </div>
 
-    <!-- Left Sidebar with ALL Features -->
+    <!-- Left Sidebar -->
     <div class="sidebar open" id="sidebar">
         <div class="sidebar-header">
             <div class="logo-icon">I</div>
             <h1>InsightOS</h1>
         </div>
-        
+
         <!-- Search Bar -->
         <div class="sidebar-search">
-            <div class="search-container">
-                <i class="fas fa-search search-icon"></i>
-                <input type="text" class="search-input" id="sidebarSearch" placeholder="Search tools and features...">
+            <div class="search-container" id="searchContainer">
+                <span class="search-icon">
+                    <i class="fas fa-search"></i>
+                </span>
+                <input type="text" class="search-input" id="sidebarSearch" placeholder="Search tools..." autocomplete="off">
+                <button type="button" class="search-clear" id="searchClear" aria-label="Clear search">
+                    <i class="fas fa-times"></i>
+                </button>
             </div>
         </div>
-        
+
         <!-- Main Navigation -->
         <div class="sidebar-nav" id="sidebarNav">
-            <!-- Original Tracker Buttons -->
+            <div class="nav-section-label">OSINT Trackers</div>
+
             <button class="tracker-btn active" data-type="phone">
                 <i class="fas fa-phone"></i>
                 Phone Tracker
@@ -1232,12 +1204,12 @@
                 <i class="fas fa-shield-alt"></i>
                 Threat Intelligence
             </button>
-            
+
             <!-- Crypto Analysis Category -->
             <div class="sidebar-category">
-                <div class="category-header active" data-category="crypto-analysis">
+                <div class="category-header" data-category="crypto-analysis">
                     <i class="fas fa-lock"></i>
-                    <span>Crypto Analysis Tools</span>
+                    <span>Crypto Analysis</span>
                     <i class="fas fa-chevron-down toggle-icon"></i>
                 </div>
                 <div class="category-items" id="cryptoAnalysisItems">
@@ -1263,12 +1235,12 @@
                         <span class="badge badge-decode">DE</span>
                     </button>
                     <button class="crypto-tool-btn" data-tool="binary-encode">
-                        <i class="fas fa-binary"></i>
+                        <i class="fas fa-barcode"></i>
                         <span>Binary Encode</span>
                         <span class="badge badge-encode">EN</span>
                     </button>
                     <button class="crypto-tool-btn" data-tool="binary-decode">
-                        <i class="fas fa-binary"></i>
+                        <i class="fas fa-barcode"></i>
                         <span>Binary Decode</span>
                         <span class="badge badge-decode">DE</span>
                     </button>
@@ -1292,15 +1264,15 @@
                         <span>HTML Decode</span>
                         <span class="badge badge-decode">DE</span>
                     </button>
-                    
+
                     <!-- Ciphers -->
                     <button class="crypto-tool-btn" data-tool="rot13">
-                        <i class="fas fa-rotate"></i>
+                        <i class="fas fa-sync"></i>
                         <span>ROT13 Cipher</span>
                         <span class="badge badge-cipher">CIP</span>
                     </button>
                     <button class="crypto-tool-btn" data-tool="caesar">
-                        <i class="fas fa-rotate-right"></i>
+                        <i class="fas fa-redo"></i>
                         <span>Caesar Cipher</span>
                         <span class="badge badge-cipher">CIP</span>
                     </button>
@@ -1325,11 +1297,11 @@
                         <span class="badge badge-cipher">CIP</span>
                     </button>
                     <button class="crypto-tool-btn" data-tool="xor">
-                        <i class="fas fa-xmark"></i>
+                        <i class="fas fa-times"></i>
                         <span>XOR Calculator</span>
                         <span class="badge badge-calc">CALC</span>
                     </button>
-                    
+
                     <!-- Hash Functions -->
                     <button class="crypto-tool-btn" data-tool="md5">
                         <i class="fas fa-fingerprint"></i>
@@ -1361,7 +1333,7 @@
                         <span>SHA3-512 Hash</span>
                         <span class="badge badge-hash">HASH</span>
                     </button>
-                    
+
                     <!-- Symmetric Encryption -->
                     <button class="crypto-tool-btn" data-tool="aes">
                         <i class="fas fa-key"></i>
@@ -1383,7 +1355,7 @@
                         <span>RC4 Cipher</span>
                         <span class="badge badge-encrypt">ENC</span>
                     </button>
-                    
+
                     <!-- Analysis Tools -->
                     <button class="crypto-tool-btn" data-tool="base32">
                         <i class="fas fa-code"></i>
@@ -1403,30 +1375,30 @@
                 </div>
             </div>
         </div>
-        
-        <!-- Static Footer with Theme Toggle -->
+
+        <!-- Footer with Theme Toggle -->
         <div class="sidebar-footer">
             <button class="theme-toggle" id="themeToggle">
                 <i class="fas fa-moon" id="themeIcon"></i>
-                <span>Dark Mode</span>
+                <span id="themeLabel">Dark Mode</span>
             </button>
         </div>
     </div>
-    
+
     <!-- Main Content -->
     <div class="main">
         <div class="card">
             <div class="card-header">
                 <div class="card-icon">
-                    <i class="fas fa-search" id="cardIcon"></i>
+                    <i class="fas fa-phone" id="cardIcon"></i>
                 </div>
-                <h2 id="cardTitle">OSINT & Threat Intelligence Tracker</h2>
+                <h2 id="cardTitle">Phone Number Tracker</h2>
             </div>
-            
-            <!-- Dynamic Form based on selection -->
+
+            <!-- Dynamic Form -->
             <form id="trackForm" class="track-form">
                 <input type="hidden" name="type" id="trackType" value="phone">
-                
+
                 <div class="input-group">
                     <label class="input-label" id="inputLabel" for="targetInput">Phone Number</label>
                     <div id="inputContainer">
@@ -1434,40 +1406,41 @@
                     </div>
                     <div class="input-hint" id="inputHint">Enter a phone number to track (e.g., +306912345678)</div>
                 </div>
-                
-                <!-- Additional fields for crypto tools -->
+
+                <!-- Crypto key field (conditional) -->
                 <div class="input-group" id="cryptoKeyGroup" style="display: none;">
-                    <label class="input-label" for="cryptoKey">Key/Password</label>
-                    <input type="text" id="cryptoKey" placeholder="Enter encryption key or password...">
+                    <label class="input-label" for="cryptoKey">Key / Password</label>
+                    <input type="text" id="cryptoKey" placeholder="Enter encryption key or password">
                 </div>
-                
+
+                <!-- Mode selector (conditional) -->
                 <div class="input-group" id="cryptoModeGroup" style="display: none;">
                     <label class="input-label">Mode</label>
-                    <div style="display: flex; gap: 10px;">
-                        <label style="display: flex; align-items: center; gap: 5px;">
-                            <input type="radio" name="cryptoMode" value="encode" checked> Encode
+                    <div class="mode-group">
+                        <label>
+                            <input type="radio" name="cryptoMode" value="encode" checked>
+                            Encode
                         </label>
-                        <label style="display: flex; align-items: center; gap: 5px;">
-                            <input type="radio" name="cryptoMode" value="decode"> Decode
+                        <label>
+                            <input type="radio" name="cryptoMode" value="decode">
+                            Decode
                         </label>
                     </div>
                 </div>
-                
+
                 <button type="submit" class="btn" id="trackBtn">
                     <i class="fas fa-search"></i>
                     <span id="btnText">Track Target</span>
                 </button>
             </form>
-            
-            <!-- Results Container -->
-            <div id="resultContainer" class="result-container"></div>
         </div>
-        
+
+        <!-- Results Container -->
+        <div id="resultContainer" class="result-container"></div>
+
         <div class="footer">
-            <p>InsightOS - Advanced OSINT & Crypto Analysis Platform | v4.2</p>
-            <p style="margin-top: 10px; font-size: 12px;">
-                <i class="fas fa-robot"></i> Need help? Click the AI Helper button in the bottom right corner!
-            </p>
+            <p>InsightOS — Advanced OSINT &amp; Crypto Analysis Platform</p>
+            <p style="font-size: 12px; color: var(--text-muted);">v4.3</p>
         </div>
     </div>
 </div>
@@ -1486,24 +1459,16 @@ document.addEventListener('DOMContentLoaded', function() {
     const inputContainer = document.getElementById('inputContainer');
     const cryptoKeyGroup = document.getElementById('cryptoKeyGroup');
     const cryptoModeGroup = document.getElementById('cryptoModeGroup');
-    
+
     const trackerButtons = document.querySelectorAll('.tracker-btn');
     const cryptoToolButtons = document.querySelectorAll('.crypto-tool-btn');
     const categoryHeaders = document.querySelectorAll('.category-header');
     const themeToggle = document.getElementById('themeToggle');
     const themeIcon = document.getElementById('themeIcon');
+    const themeLabel = document.getElementById('themeLabel');
     const sidebar = document.getElementById('sidebar');
     const hamburger = document.getElementById('hamburger');
     const searchInput = document.getElementById('sidebarSearch');
-    
-    // AI Elements
-    const aiTrigger = document.getElementById('aiTrigger');
-    const aiSidebar = document.getElementById('aiSidebar');
-    const aiMessages = document.getElementById('aiMessages');
-    const aiInput = document.getElementById('aiInput');
-    const aiSendBtn = document.getElementById('aiSendBtn');
-    const aiTyping = document.getElementById('aiTyping');
-    const aiBadge = document.getElementById('aiBadge');
 
     // Configuration
     const API_BASE = 'http://localhost:5000';
@@ -1515,6 +1480,7 @@ document.addEventListener('DOMContentLoaded', function() {
             label: 'Phone Number',
             hint: 'Enter a phone number to track (e.g., +306912345678)',
             icon: 'fa-phone',
+            title: 'Phone Number Tracker',
             btnText: 'Track Phone',
             endpoint: '/track'
         },
@@ -1523,6 +1489,7 @@ document.addEventListener('DOMContentLoaded', function() {
             label: 'Email Address',
             hint: 'Enter an email address to track (e.g., john.doe@example.com)',
             icon: 'fa-envelope',
+            title: 'Email Tracker',
             btnText: 'Track Email',
             endpoint: '/track'
         },
@@ -1531,6 +1498,7 @@ document.addEventListener('DOMContentLoaded', function() {
             label: 'IP Address',
             hint: 'Enter an IP address to track (e.g., 8.8.8.8)',
             icon: 'fa-network-wired',
+            title: 'IP Address Tracker',
             btnText: 'Track IP',
             endpoint: '/track'
         },
@@ -1539,6 +1507,7 @@ document.addEventListener('DOMContentLoaded', function() {
             label: 'Domain Name',
             hint: 'Enter a domain name to track (e.g., example.com)',
             icon: 'fa-globe',
+            title: 'Domain Tracker',
             btnText: 'Track Domain',
             endpoint: '/track'
         },
@@ -1547,6 +1516,7 @@ document.addEventListener('DOMContentLoaded', function() {
             label: 'Username',
             hint: 'Enter a username to track across platforms',
             icon: 'fa-user',
+            title: 'Username Tracker',
             btnText: 'Track Username',
             endpoint: '/track'
         },
@@ -1555,6 +1525,7 @@ document.addEventListener('DOMContentLoaded', function() {
             label: 'Cryptocurrency Address',
             hint: 'Enter a cryptocurrency address (BTC, ETH, etc.)',
             icon: 'fa-coins',
+            title: 'Crypto Address Tracker',
             btnText: 'Track Crypto',
             endpoint: '/track'
         },
@@ -1563,6 +1534,7 @@ document.addEventListener('DOMContentLoaded', function() {
             label: 'Image File',
             hint: 'Upload an image file to extract metadata',
             icon: 'fa-file-alt',
+            title: 'Metadata Extractor',
             btnText: 'Extract Metadata',
             endpoint: '/api/metadata/upload'
         },
@@ -1571,6 +1543,7 @@ document.addEventListener('DOMContentLoaded', function() {
             label: 'Threat Target',
             hint: 'Enter an IP address, domain, or URL for comprehensive threat intelligence',
             icon: 'fa-shield-alt',
+            title: 'Threat Intelligence',
             btnText: 'Analyze Threat',
             endpoint: '/api/threat/scan'
         }
@@ -1578,45 +1551,40 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // Crypto tool configurations
     const cryptoToolConfigs = {
-        // Encoding/Decoding
-        'base64-encode': { label: 'Base64 Encode', hint: 'Enter text to encode in Base64', icon: 'fa-code', needsKey: false },
-        'base64-decode': { label: 'Base64 Decode', hint: 'Enter Base64 text to decode', icon: 'fa-code', needsKey: false },
-        'hex-encode': { label: 'Hex Encode', hint: 'Enter text to encode in hexadecimal', icon: 'fa-hashtag', needsKey: false },
-        'hex-decode': { label: 'Hex Decode', hint: 'Enter hexadecimal text to decode', icon: 'fa-hashtag', needsKey: false },
-        'binary-encode': { label: 'Binary Encode', hint: 'Enter text to encode in binary', icon: 'fa-binary', needsKey: false },
-        'binary-decode': { label: 'Binary Decode', hint: 'Enter binary text to decode', icon: 'fa-binary', needsKey: false },
-        'url-encode': { label: 'URL Encode', hint: 'Enter text to URL encode', icon: 'fa-link', needsKey: false },
-        'url-decode': { label: 'URL Decode', hint: 'Enter URL encoded text to decode', icon: 'fa-link', needsKey: false },
-        'html-encode': { label: 'HTML Encode', hint: 'Enter text to HTML encode', icon: 'fab fa-html5', needsKey: false },
-        'html-decode': { label: 'HTML Decode', hint: 'Enter HTML encoded text to decode', icon: 'fab fa-html5', needsKey: false },
-        
-        // Ciphers
-        'rot13': { label: 'ROT13 Cipher', hint: 'Enter text for ROT13 encoding/decoding', icon: 'fa-rotate', needsKey: false },
-        'caesar': { label: 'Caesar Cipher', hint: 'Enter text and key for Caesar cipher', icon: 'fa-rotate-right', needsKey: true },
-        'a1z26': { label: 'A1Z26 Cipher', hint: 'Convert letters to numbers (A=1, B=2, ...)', icon: 'fa-sort-numeric-up', needsKey: false },
-        'morse': { label: 'Morse Code', hint: 'Convert text to Morse code or vice versa', icon: 'fa-wifi', needsKey: false },
-        'reverse': { label: 'Reverse Text', hint: 'Reverse the input text', icon: 'fa-exchange-alt', needsKey: false },
-        'atbash': { label: 'Atbash Cipher', hint: 'Apply Atbash cipher (A↔Z, B↔Y, ...)', icon: 'fa-random', needsKey: false },
-        'xor': { label: 'XOR Calculator', hint: 'Calculate XOR between text and key', icon: 'fa-xmark', needsKey: true },
-        
-        // Hash Functions
-        'md5': { label: 'MD5 Hash', hint: 'Generate MD5 hash of input text', icon: 'fa-fingerprint', needsKey: false },
-        'sha1': { label: 'SHA-1 Hash', hint: 'Generate SHA-1 hash of input text', icon: 'fa-fingerprint', needsKey: false },
-        'sha256': { label: 'SHA-256 Hash', hint: 'Generate SHA-256 hash of input text', icon: 'fa-fingerprint', needsKey: false },
-        'sha512': { label: 'SHA-512 Hash', hint: 'Generate SHA-512 hash of input text', icon: 'fa-fingerprint', needsKey: false },
-        'sha3-256': { label: 'SHA3-256 Hash', hint: 'Generate SHA3-256 hash of input text', icon: 'fa-fingerprint', needsKey: false },
-        'sha3-512': { label: 'SHA3-512 Hash', hint: 'Generate SHA3-512 hash of input text', icon: 'fa-fingerprint', needsKey: false },
-        
-        // Symmetric Encryption
-        'aes': { label: 'AES Encryption', hint: 'Encrypt/decrypt text using AES', icon: 'fa-key', needsKey: true },
-        'des': { label: 'DES Encryption', hint: 'Encrypt/decrypt text using DES', icon: 'fa-key', needsKey: true },
-        'blowfish': { label: 'Blowfish', hint: 'Encrypt/decrypt text using Blowfish', icon: 'fa-key', needsKey: true },
-        'rc4': { label: 'RC4 Cipher', hint: 'Encrypt/decrypt text using RC4', icon: 'fa-key', needsKey: true },
-        
-        // Analysis Tools
-        'base32': { label: 'Base32 Encode', hint: 'Encode text in Base32', icon: 'fa-code', needsKey: false },
-        'base58': { label: 'Base58 Encode', hint: 'Encode text in Base58', icon: 'fa-code', needsKey: false },
-        'ascii': { label: 'ASCII Convert', hint: 'Convert between text and ASCII codes', icon: 'fa-font', needsKey: false }
+        'base64-encode': { label: 'Base64 Encode', hint: 'Enter text to encode in Base64', icon: 'fas fa-code', needsKey: false },
+        'base64-decode': { label: 'Base64 Decode', hint: 'Enter Base64 text to decode', icon: 'fas fa-code', needsKey: false },
+        'hex-encode':    { label: 'Hex Encode', hint: 'Enter text to encode in hexadecimal', icon: 'fas fa-hashtag', needsKey: false },
+        'hex-decode':    { label: 'Hex Decode', hint: 'Enter hexadecimal text to decode', icon: 'fas fa-hashtag', needsKey: false },
+        'binary-encode': { label: 'Binary Encode', hint: 'Enter text to encode in binary', icon: 'fas fa-barcode', needsKey: false },
+        'binary-decode': { label: 'Binary Decode', hint: 'Enter binary text to decode', icon: 'fas fa-barcode', needsKey: false },
+        'url-encode':    { label: 'URL Encode', hint: 'Enter text to URL encode', icon: 'fas fa-link', needsKey: false },
+        'url-decode':    { label: 'URL Decode', hint: 'Enter URL encoded text to decode', icon: 'fas fa-link', needsKey: false },
+        'html-encode':   { label: 'HTML Encode', hint: 'Enter text to HTML encode', icon: 'fab fa-html5', needsKey: false },
+        'html-decode':   { label: 'HTML Decode', hint: 'Enter HTML encoded text to decode', icon: 'fab fa-html5', needsKey: false },
+
+        'rot13':   { label: 'ROT13 Cipher', hint: 'Enter text for ROT13 encoding/decoding', icon: 'fas fa-sync', needsKey: false },
+        'caesar':  { label: 'Caesar Cipher', hint: 'Enter text and shift key for Caesar cipher', icon: 'fas fa-redo', needsKey: true },
+        'a1z26':   { label: 'A1Z26 Cipher', hint: 'Convert letters to numbers (A=1, B=2, ...)', icon: 'fas fa-sort-numeric-up', needsKey: false },
+        'morse':   { label: 'Morse Code', hint: 'Convert text to Morse code or vice versa', icon: 'fas fa-wifi', needsKey: false },
+        'reverse': { label: 'Reverse Text', hint: 'Reverse the input text', icon: 'fas fa-exchange-alt', needsKey: false },
+        'atbash':  { label: 'Atbash Cipher', hint: 'Apply Atbash cipher (A↔Z, B↔Y, ...)', icon: 'fas fa-random', needsKey: false },
+        'xor':     { label: 'XOR Calculator', hint: 'Calculate XOR between text and key', icon: 'fas fa-times', needsKey: true },
+
+        'md5':      { label: 'MD5 Hash', hint: 'Generate MD5 hash of input text', icon: 'fas fa-fingerprint', needsKey: false },
+        'sha1':     { label: 'SHA-1 Hash', hint: 'Generate SHA-1 hash of input text', icon: 'fas fa-fingerprint', needsKey: false },
+        'sha256':   { label: 'SHA-256 Hash', hint: 'Generate SHA-256 hash of input text', icon: 'fas fa-fingerprint', needsKey: false },
+        'sha512':   { label: 'SHA-512 Hash', hint: 'Generate SHA-512 hash of input text', icon: 'fas fa-fingerprint', needsKey: false },
+        'sha3-256': { label: 'SHA3-256 Hash', hint: 'Generate SHA3-256 hash of input text', icon: 'fas fa-fingerprint', needsKey: false },
+        'sha3-512': { label: 'SHA3-512 Hash', hint: 'Generate SHA3-512 hash of input text', icon: 'fas fa-fingerprint', needsKey: false },
+
+        'aes':      { label: 'AES Encryption', hint: 'Encrypt/decrypt text using AES', icon: 'fas fa-key', needsKey: true },
+        'des':      { label: 'DES Encryption', hint: 'Encrypt/decrypt text using DES', icon: 'fas fa-key', needsKey: true },
+        'blowfish': { label: 'Blowfish', hint: 'Encrypt/decrypt text using Blowfish', icon: 'fas fa-key', needsKey: true },
+        'rc4':      { label: 'RC4 Cipher', hint: 'Encrypt/decrypt text using RC4', icon: 'fas fa-key', needsKey: true },
+
+        'base32': { label: 'Base32 Encode', hint: 'Encode text in Base32', icon: 'fas fa-code', needsKey: false },
+        'base58': { label: 'Base58 Encode', hint: 'Encode text in Base58', icon: 'fas fa-code', needsKey: false },
+        'ascii':  { label: 'ASCII Convert', hint: 'Convert between text and ASCII codes', icon: 'fas fa-font', needsKey: false }
     };
 
     // Current state
@@ -1632,28 +1600,24 @@ document.addEventListener('DOMContentLoaded', function() {
         if (localStorage.getItem('theme') === 'dark') {
             document.body.classList.add('dark');
             themeIcon.className = 'fas fa-sun';
-            themeToggle.querySelector('span').textContent = 'Light Mode';
+            themeLabel.textContent = 'Light Mode';
         }
 
         // Set up tracker buttons
         trackerButtons.forEach(button => {
-            button.addEventListener('click', () => {
-                switchToTracker(button);
-            });
+            button.addEventListener('click', () => switchToTracker(button));
         });
 
         // Set up crypto tool buttons
         cryptoToolButtons.forEach(button => {
-            button.addEventListener('click', () => {
-                switchToCryptoTool(button);
-            });
+            button.addEventListener('click', () => switchToCryptoTool(button));
         });
 
         // Category toggles
         categoryHeaders.forEach(header => {
             header.addEventListener('click', () => {
                 const category = header.getAttribute('data-category');
-                const items = document.getElementById(`${category}Items`);
+                const items = document.getElementById(`${category === 'crypto-analysis' ? 'cryptoAnalysis' : category}Items`);
                 if (items) {
                     items.classList.toggle('collapsed');
                     header.classList.toggle('collapsed');
@@ -1662,22 +1626,33 @@ document.addEventListener('DOMContentLoaded', function() {
         });
 
         // Search functionality
+        const searchContainer = document.getElementById('searchContainer');
+        const searchClear = document.getElementById('searchClear');
+
         searchInput.addEventListener('input', function() {
             const searchTerm = this.value.toLowerCase().trim();
+            searchContainer.classList.toggle('has-value', this.value.length > 0);
             filterSidebarItems(searchTerm);
+        });
+
+        searchClear.addEventListener('click', function() {
+            searchInput.value = '';
+            searchContainer.classList.remove('has-value');
+            filterSidebarItems('');
+            searchInput.focus();
         });
 
         // Theme toggle
         themeToggle.addEventListener('click', () => {
             const isDark = document.body.classList.toggle('dark');
-            
+
             if (isDark) {
                 themeIcon.className = 'fas fa-sun';
-                themeToggle.querySelector('span').textContent = 'Light Mode';
+                themeLabel.textContent = 'Light Mode';
                 localStorage.setItem('theme', 'dark');
             } else {
                 themeIcon.className = 'fas fa-moon';
-                themeToggle.querySelector('span').textContent = 'Dark Mode';
+                themeLabel.textContent = 'Dark Mode';
                 localStorage.setItem('theme', 'light');
             }
         });
@@ -1690,55 +1665,33 @@ document.addEventListener('DOMContentLoaded', function() {
 
         // Close sidebar on mobile when clicking outside
         document.addEventListener('click', (e) => {
-            if (window.innerWidth <= 768 && 
-                !sidebar.contains(e.target) && 
-                !hamburger.contains(e.target) && 
+            if (window.innerWidth <= 768 &&
+                !sidebar.contains(e.target) &&
+                !hamburger.contains(e.target) &&
                 sidebar.classList.contains('open')) {
                 sidebar.classList.remove('open');
                 hamburger.classList.remove('active');
-            }
-            
-            // Close AI sidebar when clicking outside on mobile
-            if (window.innerWidth <= 768 && 
-                aiSidebar.classList.contains('open') &&
-                !aiSidebar.contains(e.target) && 
-                !aiTrigger.contains(e.target)) {
-                aiSidebar.classList.remove('open');
             }
         });
 
         // Form submission
         form.addEventListener('submit', handleSubmit);
-        
-        // AI Chat initialization
-        initAIChat();
-        
-        // Initialize crypto analysis category as expanded
-        const cryptoCategory = document.querySelector('[data-category="crypto-analysis"]');
-        if (cryptoCategory && !cryptoCategory.classList.contains('active')) {
-            cryptoCategory.classList.add('active');
-        }
     }
 
     function switchToTracker(button) {
-        // Reset crypto mode
         isCryptoMode = false;
         currentCryptoTool = null;
-        
-        // Update button states
+
         trackerButtons.forEach(b => b.classList.remove('active'));
         cryptoToolButtons.forEach(b => b.classList.remove('active'));
         button.classList.add('active');
-        
-        // Update current type
+
         const type = button.getAttribute('data-type');
         currentType = type;
         typeInput.value = type;
-        
-        // Update UI
+
         updateUIForTracker(type);
-        
-        // Close sidebar on mobile
+
         if (window.innerWidth <= 768) {
             sidebar.classList.remove('open');
             hamburger.classList.remove('active');
@@ -1746,23 +1699,18 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     function switchToCryptoTool(button) {
-        // Set crypto mode
         isCryptoMode = true;
-        
-        // Update button states
+
         trackerButtons.forEach(b => b.classList.remove('active'));
         cryptoToolButtons.forEach(b => b.classList.remove('active'));
         button.classList.add('active');
-        
-        // Update current tool
+
         const tool = button.getAttribute('data-tool');
         currentCryptoTool = tool;
         typeInput.value = 'crypto-tool';
-        
-        // Update UI
+
         updateUIForCryptoTool(tool);
-        
-        // Close sidebar on mobile
+
         if (window.innerWidth <= 768) {
             sidebar.classList.remove('open');
             hamburger.classList.remove('active');
@@ -1771,144 +1719,116 @@ document.addEventListener('DOMContentLoaded', function() {
 
     function updateUIForTracker(type) {
         const config = trackerConfigs[type];
-        
-        // Update card
-        cardTitle.textContent = `${config.label} Tracker`;
+
+        cardTitle.textContent = config.title;
         cardIcon.className = `fas ${config.icon}`;
-        
-        // Update form
+
         inputLabel.textContent = config.label;
         inputHint.textContent = config.hint;
         btnText.textContent = config.btnText;
-        
-        // Clear results
+
         document.getElementById('resultContainer').innerHTML = '';
-        
-        // Hide crypto-specific fields
+
         cryptoKeyGroup.style.display = 'none';
         cryptoModeGroup.style.display = 'none';
-        
-        // Handle metadata special case (file upload)
+
         if (type === 'metadata') {
             inputContainer.innerHTML = `
                 <label class="file-label" for="fileInput">
                     <i class="fas fa-cloud-upload-alt"></i>
-                    Choose an image file (PNG, JPG, JPEG, GIF, TIFF, BMP)
+                    <span>Choose an image file (PNG, JPG, JPEG, GIF, TIFF, BMP)</span>
                 </label>
                 <input type="file" id="fileInput" class="file-upload" accept="image/*">
                 <div id="fileName" class="file-name"></div>
             `;
-            
-            // Add file input event listener
+
             const fileInput = document.getElementById('fileInput');
             const fileName = document.getElementById('fileName');
-            
-            fileInput.addEventListener('change', function(e) {
+
+            fileInput.addEventListener('change', function() {
                 if (this.files.length > 0) {
-                    fileName.textContent = `Selected file: ${this.files[0].name}`;
+                    fileName.textContent = `Selected: ${this.files[0].name}`;
                 } else {
                     fileName.textContent = '';
                 }
             });
         } else {
-            // Regular text input for other trackers
             inputContainer.innerHTML = `<input type="text" name="target" id="targetInput" placeholder="${config.placeholder}" required>`;
-            const targetInput = document.getElementById('targetInput');
-            targetInput.focus();
+            document.getElementById('targetInput').focus();
         }
     }
 
     function updateUIForCryptoTool(tool) {
         const config = cryptoToolConfigs[tool];
-        
-        // Update card
+
         cardTitle.textContent = config.label;
         cardIcon.className = config.icon;
-        
-        // Update form
+
         inputLabel.textContent = 'Input Text';
         inputHint.textContent = config.hint;
         btnText.textContent = config.label;
-        
-        // Clear results
+
         document.getElementById('resultContainer').innerHTML = '';
-        
-        // Show/hide crypto-specific fields
+
+        cryptoKeyGroup.style.display = config.needsKey ? 'flex' : 'none';
+
         if (config.needsKey) {
-            cryptoKeyGroup.style.display = 'flex';
-            document.getElementById('cryptoKey').placeholder = 'Enter key (e.g., 3 for Caesar cipher)';
-        } else {
-            cryptoKeyGroup.style.display = 'none';
+            document.getElementById('cryptoKey').placeholder = tool === 'caesar' ? 'Enter shift (e.g., 3)' : 'Enter key';
         }
-        
-        // Show mode selection for encode/decode tools
-        if (tool.includes('encode') || tool.includes('decode') || 
-            tool === 'caesar' || tool === 'a1z26' || tool === 'morse' || 
-            tool === 'ascii') {
-            cryptoModeGroup.style.display = 'flex';
-            
-            // Set default mode based on tool name
+
+        // Show mode selection for relevant tools
+        const showMode = tool.includes('encode') || tool.includes('decode') ||
+                         tool === 'caesar' || tool === 'a1z26' || tool === 'morse' || tool === 'ascii';
+
+        cryptoModeGroup.style.display = showMode ? 'flex' : 'none';
+
+        if (showMode) {
             const modeRadios = document.querySelectorAll('input[name="cryptoMode"]');
-            if (tool.includes('encode') || tool === 'caesar' || tool === 'a1z26' || tool === 'morse') {
-                modeRadios[0].checked = true;
-            } else if (tool.includes('decode')) {
+            if (tool.includes('decode')) {
                 modeRadios[1].checked = true;
             } else {
                 modeRadios[0].checked = true;
             }
-        } else {
-            cryptoModeGroup.style.display = 'none';
         }
-        
-        // Set up input field
+
         inputContainer.innerHTML = `<textarea name="target" id="targetInput" rows="4" placeholder="Enter text to process..."></textarea>`;
-        const targetInput = document.getElementById('targetInput');
-        targetInput.focus();
+        document.getElementById('targetInput').focus();
     }
 
     function filterSidebarItems(searchTerm) {
         const allButtons = document.querySelectorAll('.tracker-btn, .crypto-tool-btn');
-        
+
         if (searchTerm === '') {
-            // Show all items
-            allButtons.forEach(button => {
-                button.style.display = 'flex';
-            });
+            allButtons.forEach(button => button.style.display = 'flex');
             return;
         }
-        
-        // Filter items
+
         allButtons.forEach(button => {
             const text = button.textContent.toLowerCase();
-            if (text.includes(searchTerm)) {
-                button.style.display = 'flex';
-            } else {
-                button.style.display = 'none';
-            }
+            button.style.display = text.includes(searchTerm) ? 'flex' : 'none';
         });
     }
 
     async function handleSubmit(e) {
         e.preventDefault();
-        
+
         btn.classList.add('loading');
         btn.disabled = true;
-        
+
         try {
             let endpoint, body, isFormData = false;
             let formData;
-            
+
             if (isCryptoMode && currentCryptoTool) {
-                // Handle crypto tool
                 const input = document.getElementById('targetInput').value;
                 const key = document.getElementById('cryptoKey') ? document.getElementById('cryptoKey').value : '';
                 const mode = document.querySelector('input[name="cryptoMode"]:checked')?.value || 'encode';
-                
+
                 if (!input.trim()) {
                     showError('Please enter some text');
                     return;
                 }
-                
+
                 endpoint = '/crypto/process';
                 body = JSON.stringify({
                     tool: currentCryptoTool,
@@ -1917,71 +1837,64 @@ document.addEventListener('DOMContentLoaded', function() {
                     mode: mode
                 });
             } else {
-                // Handle regular tracker
                 const type = currentType;
                 const config = trackerConfigs[type];
                 let target;
-                
+
                 if (type === 'metadata') {
                     const fileInput = document.getElementById('fileInput');
                     if (!fileInput || !fileInput.files.length) {
                         showError('Please select a file');
                         return;
                     }
-                    
+
                     formData = new FormData();
                     formData.append('file', fileInput.files[0]);
                     endpoint = config.endpoint;
                     isFormData = true;
                 } else {
                     target = document.getElementById('targetInput').value;
-                    
+
                     if (!target.trim()) {
                         showError('Please enter a target');
                         return;
                     }
-                    
+
                     endpoint = config.endpoint;
-                    body = JSON.stringify({ 
-                        type: type, 
-                        target: target 
+                    body = JSON.stringify({
+                        type: type,
+                        target: target
                     });
                 }
             }
-            
+
             console.log(`Sending request to: ${API_BASE}${endpoint}`);
-            
+
             const options = {
                 method: 'POST',
                 headers: isFormData ? {} : { 'Content-Type': 'application/json' },
                 body: isFormData ? formData : body
             };
-            
+
             const response = await fetch(`${API_BASE}${endpoint}`, options);
-            
+
             if (!response.ok) {
                 throw new Error(`HTTP error! status: ${response.status}`);
             }
-            
+
             const data = await response.json();
-            
+
             if (data.success) {
                 if (isCryptoMode) {
                     displayCryptoResults(data.result, currentCryptoTool);
                 } else {
-                    displayResults(data.results || data, currentType, 
+                    displayResults(data.results || data, currentType,
                         document.getElementById('targetInput')?.value || 'File Upload');
-                }
-                
-                // Show AI helper badge
-                if (!aiSidebar.classList.contains('open')) {
-                    aiBadge.style.display = 'flex';
-                    aiBadge.textContent = '?';
                 }
             } else {
                 showError(data.error || 'Operation failed');
             }
-            
+
         } catch (error) {
             console.error('Error:', error);
             showError(`Error: ${error.message}. Make sure the Flask server is running at ${API_BASE}`);
@@ -1991,348 +1904,385 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     }
 
+    function escapeHtml(text) {
+        const div = document.createElement('div');
+        div.textContent = text;
+        return div.innerHTML;
+    }
+
     function displayCryptoResults(result, tool) {
         const resultContainer = document.getElementById('resultContainer');
         const toolConfig = cryptoToolConfigs[tool];
         const input = document.getElementById('targetInput').value;
-        
-        let resultHTML = `
+
+        const resultStr = String(result);
+        const inputPreview = input.length > 100 ? input.substring(0, 100) + '...' : input;
+
+        const resultHTML = `
             <div class="result">
                 <div class="result-header">
                     <div class="result-title">
                         <i class="${toolConfig.icon}"></i>
-                        ${toolConfig.label} Results
+                        ${toolConfig.label} — Result
                     </div>
                     <button class="clear" onclick="this.closest('.result').remove()">Clear</button>
                 </div>
-                
+
                 <div class="result-grid">
                     <div class="result-item">
                         <div class="result-key">Input</div>
-                        <div class="result-value">${input.substring(0, 100)}${input.length > 100 ? '...' : ''}</div>
+                        <div class="result-value mono">${escapeHtml(inputPreview)}</div>
                     </div>
-                    
+
                     <div class="result-item">
                         <div class="result-key">Output</div>
-                        <div class="result-value" style="font-family: 'Courier New', monospace; word-break: break-all;">${result}</div>
+                        <div class="result-value mono">${escapeHtml(resultStr)}</div>
                     </div>
                 </div>
-                
-                <div style="margin-top: 20px; display: flex; gap: 10px;">
-                    <button class="copy-btn" onclick="copyToClipboard('${result.replace(/'/g, "\\'")}')">
+
+                <div class="result-actions">
+                    <button class="copy-btn" data-copy="output">
                         <i class="fas fa-copy"></i> Copy Result
                     </button>
-                    <button class="copy-btn" onclick="copyToClipboard('${input.replace(/'/g, "\\'")}')">
+                    <button class="copy-btn" data-copy="input">
                         <i class="fas fa-copy"></i> Copy Input
                     </button>
                 </div>
             </div>
         `;
-        
+
         resultContainer.innerHTML = resultHTML;
+
+        // Attach copy listeners safely (avoiding inline onclick with string interpolation)
+        resultContainer.querySelector('[data-copy="output"]').addEventListener('click', function() {
+            copyToClipboard(resultStr, this);
+        });
+        resultContainer.querySelector('[data-copy="input"]').addEventListener('click', function() {
+            copyToClipboard(input, this);
+        });
+
         resultContainer.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
     }
 
+    // --- Friendly labels & section config for nested result objects ---
+    const SECTION_META = {
+        format:          { title: 'Format', icon: 'fa-check-double' },
+        classification:  { title: 'Classification', icon: 'fa-tags' },
+        domain_info:     { title: 'Domain Info', icon: 'fa-globe' },
+        mx_info:         { title: 'Mail Servers (MX)', icon: 'fa-server' },
+        authentication: { title: 'Email Authentication', icon: 'fa-shield-halved' },
+        gravatar:        { title: 'Gravatar', icon: 'fa-user-circle' },
+        smtp:            { title: 'SMTP Probe', icon: 'fa-paper-plane' },
+        breach_lookup:   { title: 'Breach Lookup', icon: 'fa-triangle-exclamation' },
+        reverse_dns:     { title: 'Reverse DNS', icon: 'fa-rotate-left' },
+    };
+
+    // Keys that should render as chip lists instead of comma-joined strings
+    const CHIP_KEYS = new Set([
+        'mx_records', 'ipv4_addresses', 'ipv6_addresses',
+        'dkim_selectors_found', 'notes',
+    ]);
+
+    // Keys whose value should always render mono-spaced
+    const MONO_KEYS = new Set([
+        'normalized', 'gmail_canonical', 'spf_record', 'dmarc_record',
+        'primary_mx', 'gravatar_hash',
+    ]);
+
+    // Boolean keys where `true` is a positive signal (green check)
+    // and boolean keys where `true` is actually a negative (red) signal.
+    const BOOL_NEGATIVE_WHEN_TRUE = new Set([
+        'is_disposable', 'is_role_based',
+    ]);
+
     function displayResults(results, type, target) {
         const resultContainer = document.getElementById('resultContainer');
-        
+
         if (!results || (typeof results === 'object' && Object.keys(results).length === 0)) {
             resultContainer.innerHTML = `
                 <div class="result">
                     <div class="result-header">
-                        <div class="result-title">No Results Found</div>
+                        <div class="result-title">
+                            <i class="fas fa-info-circle"></i>
+                            No Results Found
+                        </div>
                         <button class="clear" onclick="this.closest('.result').remove()">Clear</button>
                     </div>
                     <div style="color: var(--text-light); text-align: center; padding: 20px;">
-                        No data returned for ${type}: ${target}
+                        No data returned for ${escapeHtml(type)}: ${escapeHtml(target)}
                     </div>
                 </div>
             `;
             return;
         }
-        
-        let resultHTML = `
-            <div class="result">
-                <div class="result-header">
-                    <div class="result-title">
-                        <i class="${trackerConfigs[type]?.icon || 'fas fa-search'}"></i>
-                        Results for ${type}: ${target}
-                    </div>
-                    <button class="clear" onclick="this.closest('.result').remove()">Clear</button>
-                </div>
-                <div class="result-grid">
-        `;
-        
-        // Handle different result formats
-        if (typeof results === 'string') {
-            resultHTML += `
-                <div class="result-item">
-                    <div class="result-key">Result</div>
-                    <div class="result-value">${results}</div>
-                </div>
-            `;
-        } else if (typeof results === 'object') {
-            // Display object properties
-            for (const [key, value] of Object.entries(results)) {
-                if (value === null || value === undefined || key === 'error') continue;
-                
-                const displayKey = formatKey(key);
-                let displayValue = formatValue(value);
-                
-                resultHTML += `
-                    <div class="result-item">
-                        <div class="result-key">${displayKey}</div>
-                        <div class="result-value">${displayValue}</div>
-                    </div>
-                `;
-            }
+
+        // If the backend returned a validation error block
+        if (results.error && results.valid === false) {
+            showError(results.error);
+            return;
         }
-        
-        resultHTML += `
+
+        const headerHTML = `
+            <div class="result-header">
+                <div class="result-title">
+                    <i class="fas ${trackerConfigs[type]?.icon || 'fa-search'}"></i>
+                    Results for ${escapeHtml(type)}: ${escapeHtml(target)}
                 </div>
+                <button class="clear" onclick="this.closest('.result').remove()">Clear</button>
             </div>
         `;
-        
-        resultContainer.innerHTML = resultHTML;
+
+        let bodyHTML = '';
+
+        // Handle simple string results
+        if (typeof results === 'string') {
+            bodyHTML = `
+                <div class="result-grid">
+                    <div class="result-item">
+                        <div class="result-key">Result</div>
+                        <div class="result-value">${escapeHtml(results)}</div>
+                    </div>
+                </div>
+            `;
+        } else {
+            bodyHTML = renderResultObject(results);
+        }
+
+        resultContainer.innerHTML = `<div class="result">${headerHTML}${bodyHTML}</div>`;
         resultContainer.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
     }
 
+    /**
+     * Render a result object, splitting nested objects into sections
+     * and top-level scalars into a single top grid.
+     */
+    function renderResultObject(obj) {
+        const topLevelScalars = {};
+        const nestedSections = [];
+
+        for (const [key, value] of Object.entries(obj)) {
+            if (value === null || value === undefined) continue;
+            if (key === 'error' || key === 'valid') continue;
+
+            // Object = section (but not arrays)
+            if (typeof value === 'object' && !Array.isArray(value)) {
+                nestedSections.push([key, value]);
+            } else {
+                topLevelScalars[key] = value;
+            }
+        }
+
+        let html = '';
+
+        // Top-level scalars first (email, valid, etc.)
+        if (Object.keys(topLevelScalars).length > 0) {
+            html += `<div class="result-grid">`;
+            for (const [key, value] of Object.entries(topLevelScalars)) {
+                html += renderResultItem(key, value);
+            }
+            html += `</div>`;
+        }
+
+        // Then each nested object as a collapsible-style section
+        for (const [sectionKey, sectionValue] of nestedSections) {
+            html += renderSection(sectionKey, sectionValue);
+        }
+
+        return html;
+    }
+
+    function renderSection(sectionKey, sectionValue) {
+        const meta = SECTION_META[sectionKey] || { title: formatKey(sectionKey), icon: 'fa-folder' };
+
+        let inner = '<div class="result-grid">';
+
+        // Special case: authentication section includes the score card
+        if (sectionKey === 'authentication' && sectionValue.security_score) {
+            inner += renderScoreCard(sectionValue.security_score);
+        }
+
+        for (const [key, value] of Object.entries(sectionValue)) {
+            if (value === null || value === undefined) continue;
+            if (key === 'security_score') continue; // handled above
+            inner += renderResultItem(key, value);
+        }
+
+        inner += '</div>';
+
+        return `
+            <div class="result-section">
+                <div class="section-title">
+                    <i class="fas ${meta.icon}"></i>
+                    ${escapeHtml(meta.title)}
+                </div>
+                ${inner}
+            </div>
+        `;
+    }
+
+    function renderResultItem(key, value) {
+        const displayKey = formatKey(key);
+        const displayValue = formatValue(value, key);
+        return `
+            <div class="result-item">
+                <div class="result-key">${escapeHtml(displayKey)}</div>
+                <div class="result-value">${displayValue}</div>
+            </div>
+        `;
+    }
+
+    function renderScoreCard(score) {
+        const rating = (score.rating || 'poor').toLowerCase();
+        const value = Number(score.score) || 0;
+
+        let notesHTML = '';
+        if (Array.isArray(score.notes) && score.notes.length > 0) {
+            const items = score.notes.map(n => `<li>${escapeHtml(n)}</li>`).join('');
+            notesHTML = `<div class="score-notes"><ul>${items}</ul></div>`;
+        }
+
+        return `
+            <div class="score-card">
+                <div class="score-header">
+                    <div class="score-label">Security Score</div>
+                    <div class="score-value ${rating}">${value}<span style="font-size: 14px; color: var(--text-light); font-weight: 500;">/100 · ${escapeHtml(rating)}</span></div>
+                </div>
+                <div class="score-bar">
+                    <div class="score-bar-fill ${rating}" style="width: ${value}%;"></div>
+                </div>
+                ${notesHTML}
+            </div>
+        `;
+    }
+
     function formatKey(key) {
-        return key
+        return String(key)
             .replace(/_/g, ' ')
             .replace(/\b\w/g, l => l.toUpperCase());
     }
-    
-    function formatValue(value) {
-        if (value === null || value === undefined) return 'N/A';
-        
+
+    function formatValue(value, key) {
+        if (value === null || value === undefined || value === '') return '<span style="color: var(--text-muted);">N/A</span>';
+
+        // Arrays: render as chips for known "list" keys, otherwise join
         if (Array.isArray(value)) {
-            return value.length > 0 ? value.join(', ') : 'None';
+            if (value.length === 0) return '<span style="color: var(--text-muted);">None</span>';
+
+            if (CHIP_KEYS.has(key) || value.every(v => typeof v === 'string' && v.length < 80)) {
+                const chips = value.map(v => `<span class="chip">${escapeHtml(String(v))}</span>`).join('');
+                return `<div class="chip-list">${chips}</div>`;
+            }
+
+            return escapeHtml(value.join(', '));
         }
-        
+
+        // Nested object fallback (shouldn't normally hit, but safe)
         if (typeof value === 'object') {
-            try {
-                return Object.keys(value).length > 0 ? 
-                    JSON.stringify(value, null, 2) : 
-                    'No data';
-            } catch {
-                return 'Complex data';
+            if (Object.keys(value).length === 0) return '<span style="color: var(--text-muted);">No data</span>';
+            return `<span class="mono" style="font-size: 12px;">${escapeHtml(JSON.stringify(value))}</span>`;
+        }
+
+        // Booleans with context-aware coloring
+        if (typeof value === 'boolean') {
+            const isNegativeSignal = BOOL_NEGATIVE_WHEN_TRUE.has(key);
+            if (value) {
+                const cls = isNegativeSignal ? 'bad' : 'good';
+                const icon = isNegativeSignal ? 'fa-circle-exclamation' : 'fa-circle-check';
+                return `<span class="status-pill ${cls}"><i class="fas ${icon}"></i> Yes</span>`;
+            } else {
+                const cls = isNegativeSignal ? 'good' : 'neutral';
+                const icon = isNegativeSignal ? 'fa-circle-check' : 'fa-circle-xmark';
+                return `<span class="status-pill ${cls}"><i class="fas ${icon}"></i> No</span>`;
             }
         }
-        
-        if (typeof value === 'boolean') {
-            return value ? 
-                '<span style="color: var(--ai-color);"><i class="fas fa-check-circle"></i> Yes</span>' : 
-                '<span style="color: var(--text-light);"><i class="fas fa-times-circle"></i> No</span>';
+
+        // URLs
+        if (typeof value === 'string' && /^https?:\/\//i.test(value)) {
+            const safeUrl = escapeHtml(value);
+            return `<a href="${safeUrl}" target="_blank" rel="noopener noreferrer" style="color: var(--primary-color); text-decoration: none; border-bottom: 1px solid var(--primary-color); word-break: break-all;">${safeUrl}</a>`;
         }
-        
-        if (typeof value === 'string' && value.startsWith('http')) {
-            return `<a href="${value}" target="_blank" style="color: var(--primary-color); text-decoration: underline;">${value}</a>`;
+
+        // Email addresses → mailto link
+        if (typeof value === 'string' && /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value)) {
+            const safe = escapeHtml(value);
+            return `<a href="mailto:${safe}" style="color: var(--primary-color); text-decoration: none; border-bottom: 1px solid var(--primary-color);">${safe}</a>`;
         }
-        
-        return value.toString();
+
+        // Account type pill
+        if (key === 'account_type') {
+            const v = String(value).toLowerCase();
+            const cls = (v === 'disposable') ? 'bad'
+                      : (v === 'role_based') ? 'warn'
+                      : (v === 'corporate') ? 'good'
+                      : 'neutral';
+            return `<span class="status-pill ${cls}">${escapeHtml(formatKey(value))}</span>`;
+        }
+
+        // DMARC policy pill
+        if (key === 'dmarc_policy') {
+            const v = String(value).toLowerCase();
+            const cls = (v === 'reject') ? 'good'
+                      : (v === 'quarantine') ? 'warn'
+                      : 'bad';
+            return `<span class="status-pill ${cls}">${escapeHtml(v)}</span>`;
+        }
+
+        // Rating pill
+        if (key === 'rating') {
+            const v = String(value).toLowerCase();
+            const cls = (v === 'excellent') ? 'good'
+                      : (v === 'good') ? 'good'
+                      : (v === 'weak') ? 'warn'
+                      : 'bad';
+            return `<span class="status-pill ${cls}">${escapeHtml(v)}</span>`;
+        }
+
+        // Mono-spaced string content
+        const str = String(value);
+        if (MONO_KEYS.has(key) || str.length > 40) {
+            return `<span class="mono">${escapeHtml(str)}</span>`;
+        }
+
+        return escapeHtml(str);
     }
 
     function showError(message) {
         const resultContainer = document.getElementById('resultContainer');
         resultContainer.innerHTML = `
-            <div class="result">
+            <div class="result" style="border-left-color: var(--danger-color);">
                 <div class="result-header">
-                    <div class="result-title">Error</div>
+                    <div class="result-title" style="color: var(--danger-color);">
+                        <i class="fas fa-exclamation-triangle"></i>
+                        Error
+                    </div>
                     <button class="clear" onclick="this.closest('.result').remove()">Clear</button>
                 </div>
                 <div class="result-grid">
                     <div class="result-item">
-                        <div class="result-key">Error</div>
-                        <div class="result-value error">${message}</div>
+                        <div class="result-key">Details</div>
+                        <div class="result-value error">${escapeHtml(message)}</div>
                     </div>
                 </div>
             </div>
         `;
     }
 
-    // AI Chat functions
-    aiTrigger.addEventListener('click', () => {
-        aiSidebar.classList.toggle('open');
-        aiBadge.style.display = 'none';
-        
-        setTimeout(() => {
-            aiMessages.scrollTop = aiMessages.scrollHeight;
-        }, 100);
-    });
-
-    function initAIChat() {
-        aiInput.addEventListener('keypress', (e) => {
-            if (e.key === 'Enter' && !e.shiftKey) {
-                e.preventDefault();
-                sendAIMessage();
-            }
-        });
-        
-        aiInput.addEventListener('input', function() {
-            this.style.height = 'auto';
-            this.style.height = Math.min(this.scrollHeight, 120) + 'px';
-        });
-        
-        aiSendBtn.addEventListener('click', sendAIMessage);
-    }
-    
-    function askQuestion(question) {
-        aiInput.value = question;
-        sendAIMessage();
-    }
-    
-    function sendAIMessage() {
-        const message = aiInput.value.trim();
-        if (!message) return;
-
-        addAIMessage('user', message);
-        aiInput.value = '';
-        
-        showTypingIndicator();
-        aiSendBtn.disabled = true;
-
-        fetch(`${API_BASE}/api/chat-simple`, {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ message })
-        })
-        .then(res => {
-            if (!res.ok) {
-                throw new Error(`HTTP error! status: ${res.status}`);
-            }
-            return res.json();
-        })
-        .then(data => {
-            hideTypingIndicator();
-            
-            if (data.success) {
-                typewriterMessage('bot', data.response);
-            } else {
-                addAIMessage('bot', `Error: ${data.response || 'Unable to get response'}`);
-            }
-        })
-        .catch(error => {
-            hideTypingIndicator();
-            console.error('AI Chat Error:', error);
-            addAIMessage('bot', `Connection error. Please make sure the Flask server is running at ${API_BASE}`);
-        })
-        .finally(() => {
-            aiSendBtn.disabled = false;
-        });
-    }
-    
-    function showTypingIndicator() {
-        aiTyping.classList.add('show');
-    }
-    
-    function hideTypingIndicator() {
-        aiTyping.classList.remove('show');
-    }
-    
-    function typewriterMessage(sender, message, speed = 20) {
-        const messageDiv = document.createElement('div');
-        messageDiv.className = `ai-message ${sender}`;
-        messageDiv.style.opacity = '0.9';
-        
-        aiMessages.appendChild(messageDiv);
-        
-        setTimeout(() => {
-            aiMessages.scrollTop = aiMessages.scrollHeight;
-        }, 100);
-        
-        const formattedMessage = message
-            .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
-            .replace(/\*(.*?)\*/g, '<em>$1</em>')
-            .replace(/`(.*?)`/g, '<code>$1</code>')
-            .replace(/\n\n/g, '<br><br>')
-            .replace(/\n/g, '<br>');
-        
-        const parts = formattedMessage.split(/(<[^>]+>)/g);
-        let currentIndex = 0;
-        let finalHTML = '';
-        
-        function typeNextChar() {
-            if (currentIndex >= parts.length) {
-                messageDiv.style.opacity = '1';
-                
-                const messages = aiMessages.querySelectorAll('.ai-message');
-                if (messages.length > 50) {
-                    messages[0].remove();
-                }
-                return;
-            }
-            
-            const part = parts[currentIndex];
-            
-            if (part.startsWith('<') && part.endsWith('>')) {
-                finalHTML += part;
-                currentIndex++;
-                setTimeout(typeNextChar, 0);
-            } else {
-                if (part.length > 0) {
-                    finalHTML += part.charAt(0);
-                    parts[currentIndex] = part.substring(1);
-                    
-                    messageDiv.innerHTML = finalHTML;
-                    
-                    aiMessages.scrollTop = aiMessages.scrollHeight;
-                    
-                    setTimeout(typeNextChar, speed);
-                } else {
-                    currentIndex++;
-                    setTimeout(typeNextChar, 0);
-                }
-            }
-        }
-        
-        typeNextChar();
-    }
-    
-    function addAIMessage(sender, message) {
-        const messageDiv = document.createElement('div');
-        messageDiv.className = `ai-message ${sender}`;
-        
-        const formattedMessage = message
-            .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
-            .replace(/\*(.*?)\*/g, '<em>$1</em>')
-            .replace(/`(.*?)`/g, '<code>$1</code>')
-            .replace(/\n\n/g, '<br><br>')
-            .replace(/\n/g, '<br>');
-        
-        messageDiv.innerHTML = formattedMessage;
-        
-        aiMessages.appendChild(messageDiv);
-        
-        setTimeout(() => {
-            aiMessages.scrollTop = aiMessages.scrollHeight;
-        }, 100);
-        
-        const messages = aiMessages.querySelectorAll('.ai-message');
-        if (messages.length > 50) {
-            messages[0].remove();
-        }
-    }
-    
-    // Global functions
-    window.copyToClipboard = function(text) {
+    function copyToClipboard(text, btnEl) {
         navigator.clipboard.writeText(text).then(() => {
-            const btn = event.target.closest('.copy-btn');
-            const originalHTML = btn.innerHTML;
-            btn.innerHTML = '<i class="fas fa-check"></i> Copied!';
-            btn.style.backgroundColor = 'rgba(6, 214, 160, 0.3)';
-            
+            const originalHTML = btnEl.innerHTML;
+            btnEl.innerHTML = '<i class="fas fa-check"></i> Copied!';
+            btnEl.style.color = 'var(--accent-color)';
+            btnEl.style.borderColor = 'var(--accent-color)';
+
             setTimeout(() => {
-                btn.innerHTML = originalHTML;
-                btn.style.backgroundColor = '';
-            }, 2000);
+                btnEl.innerHTML = originalHTML;
+                btnEl.style.color = '';
+                btnEl.style.borderColor = '';
+            }, 1800);
         }).catch(err => {
-            console.error('Copy f: ', err);
-           
+            console.error('Copy failed:', err);
         });
-    };
-    
-    window.askQuestion = askQuestion;
+    }
 });
 </script>
 </body>
